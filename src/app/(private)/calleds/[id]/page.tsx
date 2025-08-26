@@ -16,9 +16,9 @@ import {
 } from "@/components/ui/dialog"
 import { ServiceModal } from "@/components/serviceModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser, User } from "@/utils/getUser";
-import { Called, getCalleds } from "@/utils/getCalleds";
-import { useParams } from "next/navigation";
+import { getUser, User } from "@/api/getUser";
+import { Called } from "@/api/getCalleds";
+import { useParams, useRouter } from "next/navigation";
 import { formatPrice } from "@/utils/formatPrice";
 import { format } from "date-fns";
 import { api } from "@/libs/axios";
@@ -28,6 +28,8 @@ import { useState } from "react";
 export default function CalledDetails() {
 
     const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false)
+
+    const router = useRouter()
 
     const params = useParams()
 
@@ -40,12 +42,16 @@ export default function CalledDetails() {
         queryFn: getUser
     })
 
-    const { data: calleds } = useQuery<Called[]>({
-        queryKey: ['calleds'],
-        queryFn: getCalleds
-    })
+    const { data: called } = useQuery<Called>({
+        queryKey: ['calleds', calledId],
+        queryFn: async () => {
+            const res = await api.get(`/calleds/${calledId}`)
 
-    const called = calleds?.find((called) => called.id === calledId)
+            const called = res.data.called
+
+            return called
+        }
+    })
 
     const { mutate: updateCalledStatus } = useMutation({
         mutationFn: (status: 'PROGRESS' | 'CLOSED') => api.patch(`/calleds/${called?.id}`, {
@@ -53,7 +59,6 @@ export default function CalledDetails() {
         }),
 
         onSuccess: () => {
-
             queryClient.invalidateQueries({ queryKey: ['calleds'] })
         }
     })
@@ -71,7 +76,8 @@ export default function CalledDetails() {
 
     if (!called) {
 
-        return
+        return router.replace('/calleds')
+        
     }
 
     return (
@@ -318,7 +324,6 @@ export default function CalledDetails() {
                                                 }
                                             </div>
                                         </div>
-
                                     </Card.Root>
                                 )
                             }

@@ -20,7 +20,7 @@ import {
 import { Ban, CircleCheck, PenLine, Plus } from "lucide-react"
 import { ServiceModal } from "@/components/serviceModal"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getServices, Service } from "@/utils/getServices"
+import { getServices, Service } from "@/api/getServices"
 import { api } from "@/libs/axios"
 import { useState } from "react"
 import { useMediaQuery } from "usehooks-ts"

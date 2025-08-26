@@ -3,7 +3,7 @@ import { Trash, Upload } from "lucide-react";
 import { Input } from "../input";
 import { AvailableHourTag } from "../availableHourTag";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser, User } from "@/utils/getUser";
+import { getUser} from "@/api/getUser";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import { api } from "@/libs/axios";
 import { Separator } from "../ui/separator";
 import { ErrorMessage } from "../errorMessage";
 import { AxiosError } from "axios";
+import { User } from "@/utils/getServerUser";
 
 interface ProfileDialogProps {
     closeUserDialog: () => void

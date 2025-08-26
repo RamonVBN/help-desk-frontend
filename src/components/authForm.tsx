@@ -36,7 +36,7 @@ export function AuthForm() {
             password
         }),
         onSuccess: () => {
-            router.replace('/calleds')
+            return router.replace('/calleds')
         },
         onError(error) {
 
@@ -56,7 +56,7 @@ export function AuthForm() {
             password
         }),
         onSuccess: () => {
-            router.replace('/calleds')
+            return router.replace('/calleds')
         },
         onError(error) {
 
@@ -145,7 +145,7 @@ export function AuthForm() {
                 }
 
                 {
-                    (!isCreatingSession && pathname) === '/sign-up' && (
+                    (!isCreatingSession && pathname === '/sign-up') && (
                         'Cadastrar-se'
                     )
                 }

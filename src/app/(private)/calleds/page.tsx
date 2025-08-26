@@ -4,11 +4,10 @@ import { ClientCalleds } from "@/components/clientCalleds"
 import { AdminCalleds } from "@/components/adminCalleds"
 
 import { useQuery } from "@tanstack/react-query"
-import { getUser, User } from "@/utils/getUser"
+import { getUser, User } from "@/api/getUser"
 
 
 export default function Calleds() {
-
 
     const {data: user} = useQuery<User>({
         queryKey: ['user'],

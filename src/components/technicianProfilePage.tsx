@@ -14,11 +14,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getTechnicians, Technician } from "@/utils/getTechnicians";
+import { getTechnicians, Technician } from "@/api/getTechnicians";
 import { useParams, useRouter } from "next/navigation";
 import { api } from "@/libs/axios";
 import { AxiosError } from "axios";
 import { ErrorMessage } from "./errorMessage";
+import { useEffect } from "react";
 
 
 const technicianBaseProfileFormSchema = z.object({
@@ -53,18 +54,19 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
     const techId = params.id
 
     const { data: technicians } = useQuery<Technician[]>({
+        refetchOnMount: 'always',
         queryKey: ['technicians'],
         queryFn: getTechnicians
     })
 
     const technician = technicians?.find((tech) => tech.id === techId)
 
-    const { register, handleSubmit, control, setValue, formState: { errors }, setError } = useForm<TechnicianUpdateProfileForm | TechnicianCreateProfileForm>({
+    const { register, handleSubmit, control, setValue, formState: { errors }, setError, reset } = useForm<TechnicianUpdateProfileForm | TechnicianCreateProfileForm>({
         defaultValues: {
             name: technician ? technician.name : '',
             email: technician ? technician.email : '',
             availableHours: technician ? technician.technician.availableHours : [],
-            password: technician && schema === createTechnicianProfileFormSchema ? '123456' : '',
+            password: technician && schema === createTechnicianProfileFormSchema ? '******' : '',
             role: 'TECHNICIAN'
         },
         resolver: zodResolver(schema)
@@ -136,6 +138,12 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
         return setValue("name", valorInput.replace(/[^a-zA-ZÀ-ÿ\s]/g, ""))
         // permite letras, acentos e espaços
     }
+
+    useEffect(() => {
+        if (technician) {
+            reset({name: technician.name, email: technician.email, availableHours: technician.technician.availableHours})
+        }
+    }, [technician])
 
     return (
         <div className="w-full flex flex-col lg:items-center">

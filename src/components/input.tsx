@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 interface Input extends ComponentProps<'input'> {
     className?: string
     label: string
-    error?: true | false
+    error?: boolean
 }
 
 export function Input({type='text', label, placeholder, className, error = false, ...rest}: Input) {

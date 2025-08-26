@@ -9,7 +9,6 @@ export interface User {
     availableHours: string[]
 }
 
-
 export async function getUser() {
     const res = await api.get('/users/me', {
     })

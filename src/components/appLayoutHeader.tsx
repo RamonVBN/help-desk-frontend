@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, BriefcaseBusiness, ClipboardList, LogOut, Menu, Plus, Users, Wrench } from "lucide-react";
+import { ArrowLeft, BriefcaseBusiness, ClipboardList, LogOut, Menu, Plus, Trash, Upload, Users, Wrench } from "lucide-react";
 import Image from "next/image";
 
 import { Separator } from "@/components/ui/separator"
@@ -22,9 +22,8 @@ import { api } from "@/libs/axios";
 import { useRouter } from "next/navigation";
 
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { getUser, User } from "@/utils/getUser";
+import { getUser, User } from "@/api/getUser";
 import { useMediaQuery } from "usehooks-ts"
-
 
 
 export function AppLayoutHeader() {
@@ -33,9 +32,10 @@ export function AppLayoutHeader() {
 
     const [isNavMenuOpen, setIsNavMenuOpen] = useState(false)
 
+
     const router = useRouter()
 
-    const { data: user } = useQuery<User>({
+    const { data: user, isLoading } = useQuery<User>({
         queryKey: ['user'],
         queryFn: getUser
     })
@@ -51,10 +51,6 @@ export function AppLayoutHeader() {
         setIsNavMenuOpen(false)
     }
 
-    if (!user) {
-
-        return
-    }
 
     return (
         <header className=" xl:w-[15.625rem] lg:w-[12.5rem] flex lg:flex-col justify-between">
@@ -68,21 +64,23 @@ export function AppLayoutHeader() {
                     <Image width={44} height={44} src={'/logo.svg'} alt="" />
                     <div className="flex flex-col">
                         <span className="font-bold text-xl leading-[140%] text-gray-600">HelpDesk</span>
+
+
                         <span className="font-bold text-[10px] leading-[140%] tracking-[6%] text-blue-200">
                             {
-                                user.role === 'ADMIN' && (
+                                user?.role === 'ADMIN' && (
                                     'ADMIN'
                                 )
                             }
 
                             {
-                                user.role === 'TECHNICIAN' && (
+                                user?.role === 'TECHNICIAN' && (
                                     'TÉCNICO'
                                 )
                             }
 
                             {
-                                user.role === 'CLIENT' && (
+                                user?.role === 'CLIENT' && (
                                     'CLIENTE'
                                 )
                             }
@@ -103,30 +101,45 @@ export function AppLayoutHeader() {
                 <div className="flex flex-col gap-4">
                     <span className="font-bold text-[10px] leading-[140%] tracking-[%6] text-gray-400 ml-4 lg:hidden">MENU</span>
                     <div className="flex flex-col gap-1.5">
-                        <NavLink name={user.role === 'ADMIN' ? 'Chamados' : 'Meus chamados'} closeNavMenu={closeNavMenu} href={'/calleds'}>
-                            <ClipboardList size={20} />
-                        </NavLink>
+
                         {
-                            user.role === 'ADMIN' && (
+                            user ? (
+
                                 <>
-                                    <NavLink name="Técnicos" closeNavMenu={closeNavMenu} href="/technicians">
-                                        <Users size={20} />
+                                    <NavLink name={user.role === 'ADMIN' ? 'Chamados' : 'Meus chamados'} closeNavMenu={closeNavMenu} href={'/calleds'}>
+                                        <ClipboardList size={20} />
                                     </NavLink>
-                                    <NavLink name="Clientes" closeNavMenu={closeNavMenu} href="/clients">
-                                        <BriefcaseBusiness size={20} />
-                                    </NavLink>
-                                    <NavLink name="Serviços" closeNavMenu={closeNavMenu} href="/services">
-                                        <Wrench size={20} />
-                                    </NavLink>
+                                    {
+                                        user.role === 'ADMIN' && (
+                                            <>
+                                                <NavLink name="Técnicos" closeNavMenu={closeNavMenu} href="/technicians">
+                                                    <Users size={20} />
+                                                </NavLink>
+                                                <NavLink name="Clientes" closeNavMenu={closeNavMenu} href="/clients">
+                                                    <BriefcaseBusiness size={20} />
+                                                </NavLink>
+                                                <NavLink name="Serviços" closeNavMenu={closeNavMenu} href="/services">
+                                                    <Wrench size={20} />
+                                                </NavLink>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        user.role == 'CLIENT' && (
+                                            <NavLink name="Criar chamado" closeNavMenu={closeNavMenu} href="/calleds/new">
+                                                <Plus size={20} />
+                                            </NavLink>
+                                        )
+                                    }
                                 </>
-                            )
-                        }
-                        {
-                            user.role == 'CLIENT' && (
-                                <NavLink name="Criar chamado" closeNavMenu={closeNavMenu} href="/calleds/new">
-                                    <Plus size={20} />
-                                </NavLink>
-                            )
+                            ) :
+                                <>
+                                    <div className="w-full px-3 py-4 rounded-[5px] h-[2.75rem] bg-gray-200 animate-pulse" />
+                                    <div className="w-full px-3 py-4 rounded-[5px] h-[2.75rem] bg-gray-200 animate-pulse" />
+                                    <div className="w-full px-3 py-4 rounded-[5px] h-[2.75rem] bg-gray-200 animate-pulse" />
+                                    <div className="w-full px-3 py-4 rounded-[5px] h-[2.75rem] bg-gray-200 animate-pulse" />
+                                </>
+
                         }
                     </div>
                 </div>
@@ -135,13 +148,24 @@ export function AppLayoutHeader() {
 
             <Separator className="hidden lg:block bg-gray-200" />
 
-            <DropdownMenu modal>
+            <DropdownMenu
+                modal>
                 <DropdownMenuTrigger asChild>
-                    <div className="flex gap-3 p-4 items-center cursor-pointer lg:hover:bg-gray-200 transition-colors">
-                        <Avatar username={user.name} imageUrl={user.imageUrl} className="w-10 h-10 text-[14px]" />
+                    <div className={`flex gap-3 p-4 items-center  transition-colors ${user ? 'lg:hover:bg-gray-200 cursor-pointer': 'pointer-events-none cursor-not-allowed'}`}>
+                        <Avatar username={user?.name} imageUrl={user?.imageUrl} className="w-10 h-10 text-[14px]" />
                         <div className="lg:flex lg:flex-col hidden ">
-                            <span className="text-[14px] leading-[140%] text-gray-600 truncate max-w-[9.375rem]">{user.name}</span>
-                            <span className="text-xs leading-[140%] text-gray-400 truncate max-w-[9.375rem]">{user.email}</span>
+                            {
+                                user ? (
+                                    <>
+                                        <span className="text-[14px] leading-[140%] text-gray-600 truncate max-w-[9.375rem]">{user.name}</span>
+                                        <span className="text-xs leading-[140%] text-gray-400 truncate max-w-[9.375rem]">{user.email}</span>
+                                    </>
+                                ) :
+                                    <div className="flex flex-col gap-1">
+                                        <span className=" bg-gray-200 animate-pulse h-[15px] w-[9.375rem] rounded-[6px]" />
+                                        <span className="bg-gray-200 animate-pulse h-[10px] w-[9.375rem] rounded-[6px]" />
+                                    </div>
+                            }
                         </div>
                     </div>
                 </DropdownMenuTrigger>

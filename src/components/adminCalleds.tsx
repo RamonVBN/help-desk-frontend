@@ -1,3 +1,4 @@
+'use client'
 import {
     Table,
     TableBody,
@@ -13,7 +14,7 @@ import { CalledStatus } from "@/components/calledStatus"
 
 import Link from "next/link"
 import { useQuery } from "@tanstack/react-query"
-import { Called, getCalleds } from "@/utils/getCalleds"
+import { Called, getCalleds } from "@/api/getCalleds"
 
 import {format} from 'date-fns'
 import { formatPrice } from "@/utils/formatPrice"
@@ -25,7 +26,7 @@ export function AdminCalleds() {
     const isSm = useMediaQuery("(min-width: 640px)")
 
     const { data: calleds } = useQuery<Called[]>({
-        queryKey: ['calleds', 'admin'],
+        queryKey: ['calleds'],
         queryFn: getCalleds
     })
 
@@ -57,7 +58,7 @@ export function AdminCalleds() {
                                     <TableRow key={called.id}>
                                         <TableCell className="whitespace-normal">
                                             <span className="text-xs leading-[140%] text-gray-200 font-bold">{format
-                                                (called.updatedAt, "dd/MM/yyyy h:m")}</span>
+                                                (called.updatedAt, "dd/MM/yyyy HH:mm")}</span>
                                         </TableCell>
 
                                         <TableCell className="hidden lg:table-cell">

@@ -11,7 +11,7 @@ import { Separator } from "./ui/separator";
 import { Avatar } from "./avatar";
 import { CalledStatus } from "./calledStatus";
 import Link from "next/link";
-import { Called } from "@/utils/getCalleds";
+import { Called } from "@/api/getCalleds";
 import { formatDate } from "@/utils/formatDate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/libs/axios";

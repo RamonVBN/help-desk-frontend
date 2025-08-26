@@ -1,7 +1,6 @@
 import { api } from "@/libs/axios";
 
 export interface Service {
-    
     id: string
     name: string
     price: number

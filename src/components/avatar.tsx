@@ -3,8 +3,8 @@ import Image from "next/image"
 
 
 interface AvatarProps {
-    username: string
-    imageUrl: string
+    username?: string
+    imageUrl?: string
     className?: string
 }
 
@@ -46,10 +46,19 @@ export function Avatar({ imageUrl, className, username }: AvatarProps) {
         )
     }
 
-    return (
+    if (username) {
+         return (
         <div className={cn(["bg-blue-800 flex justify-center items-center rounded-full text-gray-600 overflow-hidden ", className])}>
             <span className="text-inherit leading-[120%] tracking-[6%]">{splitUsername(username)}
             </span>
         </div>
     )
+    }
+
+    return (
+        <div className={cn(["bg-blue-800 flex justify-center items-center rounded-full text-gray-600 animate-pulse", className])}>
+        </div>
+    )
+
+   
 }

@@ -2,8 +2,6 @@ import { cookies } from "next/headers";
 import { AppLayoutHeader } from "@/components/appLayoutHeader";
 import { redirect } from "next/navigation";
 
-export const revalidate = 0
-
 export default async function AppLayout({
     children,
 }: Readonly<{
@@ -13,9 +11,8 @@ export default async function AppLayout({
     const cookieStore = await cookies();
     const token = cookieStore.get('access_token');
 
-    
     if (!token) {
-       return redirect("/sign-in")
+        return redirect("/sign-in")
     }
     
     return (

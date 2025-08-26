@@ -1,3 +1,5 @@
+'use client'
+
 import {
     Table,
     TableBody,
@@ -10,10 +12,9 @@ import { Avatar } from "./avatar"
 import { CalledStatus } from "./calledStatus"
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { Eye } from "lucide-react"
+import { Eye, Frown } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
-import { Called, getCalleds } from "@/utils/getCalleds"
-import { formatDate } from "@/utils/formatDate"
+import { Called, getCalleds } from "@/api/getCalleds"
 import { formatPrice } from "@/utils/formatPrice"
 import { useMediaQuery } from "usehooks-ts"
 import { format } from "date-fns"
@@ -24,9 +25,22 @@ export function ClientCalleds() {
     const is2xl = useMediaQuery("(min-width: 1536px)")
 
     const { data: clientCalleds } = useQuery<Called[]>({
-        queryKey: ['calleds', 'client'],
+        queryKey: ['calleds'],
         queryFn: getCalleds,
     })
+
+    if (!clientCalleds) {
+        
+        return
+    }
+
+    if (clientCalleds.length < 1) {
+        
+        return <div className="w-full flex items-center justify-center gap-2">
+            <span className="font-bold text-xl" >Você ainda não criou nenhum chamado</span>
+            <Frown size={24}/>
+        </div>
+    }
 
     return (
         <div className="flex flex-col w-full gap-4 md:gap-6">
@@ -55,7 +69,7 @@ export function ClientCalleds() {
 
                                         <TableCell className="whitespace-normal">
                                             <span className="text-xs leading-[140%] text-gray-200 font-bold">{format
-                                                (called.updatedAt, "dd/MM/yyyy h:m")}</span>
+                                                (called.updatedAt, "dd/MM/yyyy HH:mm")}</span>
                                         </TableCell>
 
                                         <TableCell className="hidden lg:table-cell">

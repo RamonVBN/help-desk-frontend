@@ -15,10 +15,11 @@ import {
     SelectValue
 } from "@/components/ui/select"
 import { api } from '@/libs/axios'
-import { getServices, Service } from '@/utils/getServices'
+import { getServices, Service } from '@/api/getServices'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -31,6 +32,8 @@ const createCalledFormSchema = z.object({
 type CreateCalledForm = z.infer<typeof createCalledFormSchema>
 
 export default function CreateCalled() {
+
+    const router = useRouter()
 
     const { register, control, handleSubmit, watch, reset, formState: { errors }, setError, setValue } = useForm<CreateCalledForm>({
         resolver: zodResolver(createCalledFormSchema)
@@ -50,6 +53,7 @@ export default function CreateCalled() {
             serviceId
         }),
         onSuccess: () => {
+            router.replace('/calleds')
             reset()
         },
         onError(error) {
@@ -134,15 +138,18 @@ export default function CreateCalled() {
                                                 <div className="group flex flex-col">
                                                     <label htmlFor='selectService' 
                                                     className={`font-bold text-[10px] leading-[140%] text-gray-300 
+                                                        ${(!errors.serviceId && !errors.root) && 'group-has-focus-within:text-blue-300'}
                                                         ${(!errors.serviceId && !errors.root) && 'group-has-[button[data-state=open]]:text-blue-300'} 
                                                         ${(errors.serviceId || errors.root) && 'text-red-300'}`}>CATEGORIA DE SERVIÇO</label>
 
                                                     <SelectTrigger 
+                                                    tabIndex={0}
                                                     error={errors.serviceId || errors.root ? true : false} id='selectService' 
                                                     className={`md:text-base leading-[140%] cursor-pointer border-b border-gray-500 rounded-none 
+                                                        ${(!errors.serviceId && !errors.root) && 'focus-within:border-blue-300'}
                                                         ${(!errors.serviceId && !errors.root) && 'data-[state=open]:border-blue-300'} 
                                                         ${(errors.serviceId || errors.root ) && 'border-red-300'}`}>
-                                                        <SelectValue className='data-[placeholder]:text-gray-400' placeholder="Selecione a categoria de atendimento" />
+                                                        <SelectValue  className='data-[placeholder]:text-gray-400' placeholder="Selecione a categoria de atendimento" />
                                                     </SelectTrigger>
 
                                                     <SelectContent sideOffset={10} className='py-4 px-5'>

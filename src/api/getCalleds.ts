@@ -35,7 +35,6 @@ export interface Called {
     }[]
 }
 
-
 export async function getCalleds(){
 
     const res = await api.get('/calleds')

@@ -14,11 +14,9 @@ import {
 import { Avatar } from "@/components/avatar";
 import Link from "next/link";
 import { EditButton } from "@/components/editButton";
-import { TableHoursAvailable } from "@/components/tableHoursAvailable";
+import { TableCellHoursAvailable } from "@/components/tableCellHoursAvailable";
 import { useQuery } from "@tanstack/react-query";
-import { getTechnicians, Technician } from "@/utils/getTechnicians";
-
-
+import { getTechnicians, Technician } from "@/api/getTechnicians";
 
 export default function Technicians() {
 
@@ -72,9 +70,9 @@ export default function Technicians() {
 
                                         <TableCell className="max-w-10">
 
-                                            <TableHoursAvailable className="md:hidden" limit={1} hoursList={technician.technician.availableHours} />
-                                            <TableHoursAvailable className="hidden md:flex xl:hidden" limit={2} hoursList={technician.technician.availableHours} />
-                                            <TableHoursAvailable className="hidden xl:flex" limit={4} hoursList={technician.technician.availableHours} />
+                                            <TableCellHoursAvailable className="md:hidden" limit={1} hoursList={technician.technician.availableHours} />
+                                            <TableCellHoursAvailable className="hidden md:flex xl:hidden" limit={2} hoursList={technician.technician.availableHours} />
+                                            <TableCellHoursAvailable className="hidden xl:flex" limit={4} hoursList={technician.technician.availableHours} />
                                         </TableCell>
 
                                         <TableCell className="text-right">

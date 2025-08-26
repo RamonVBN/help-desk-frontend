@@ -5,7 +5,6 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 
-import { Separator } from "@radix-ui/react-separator"
 import { Avatar } from "./avatar"
 import { Input } from "./input"
 import { Button } from "./ui/button"
@@ -15,9 +14,10 @@ import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { api } from "@/libs/axios"
-import { Client } from "@/utils/getClients"
+import { Client } from "@/api/getClients"
 import { ErrorMessage } from "./errorMessage"
 import { useEffect, useState } from "react"
+import { Separator } from "./ui/separator"
 
 const clientProfileFormSchema = z.object({
     name: z.string().trim().min(3, { error: 'Digite um nome válido.' }),
@@ -38,7 +38,7 @@ export function ClientProfileModal({ clientId, handleCloseModal }: ClientProfile
     
     const [updatedClient, setUpdatedClient] = useState<Client>()
 
-    const { register, handleSubmit, setValue, reset, formState: { errors }, setFocus,  } = useForm<ClientProfileForm>({
+    const { register, handleSubmit, setValue, reset, formState: { errors }, setFocus } = useForm<ClientProfileForm>({
         resolver: zodResolver(clientProfileFormSchema)
     })
 
@@ -90,7 +90,7 @@ export function ClientProfileModal({ clientId, handleCloseModal }: ClientProfile
                 <DialogDescription className="sr-only">{`Exclua a conta do cliente ${updatedClient.name}`}</DialogDescription>
             </DialogHeader>
 
-            <Separator orientation="horizontal" decorative className="bg-gray-500 border-t" />
+            <Separator />
 
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
                 <div className="pb-8 pt-7 px-7 flex flex-col gap-5" >
@@ -120,7 +120,7 @@ export function ClientProfileModal({ clientId, handleCloseModal }: ClientProfile
                         </div>
                     </div>
                 </div>
-                <Separator orientation="horizontal" decorative className="bg-gray-500 border-t" />
+                <Separator/>
 
 
                 <div className="py-6 px-7 flex flex-col">

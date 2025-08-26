@@ -27,6 +27,7 @@ export default async function SignIn() {
         </div>
 
         <AuthForm />
+        
       </Card.Root>
 
       <Card.Root className="gap-5">

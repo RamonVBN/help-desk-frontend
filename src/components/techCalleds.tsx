@@ -3,16 +3,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { CalledStatus } from "./calledStatus";
 import { TechCalledCard } from "./techCalledCard";
-import { Called, getCalleds,  } from "@/utils/getCalleds";
+import { Called, getCalleds, } from "@/api/getCalleds";
 
 
 export function TechCalleds() {
 
     const {data: techCalleds} = useQuery<Called[]>({
-        queryKey: ['calleds', 'technician'],
+        queryKey: ['calleds'],
         queryFn: getCalleds,
     })
-
 
     const progressCalleds = techCalleds?.filter((called) => called.status === 'PROGRESS')
 
