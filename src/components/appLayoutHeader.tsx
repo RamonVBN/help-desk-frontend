@@ -13,7 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar } from "@/components/avatar";
 
 import { UserDialog } from "@/components/userModal";
@@ -31,7 +31,7 @@ export function AppLayoutHeader() {
     const isSm = useMediaQuery("(min-width: 640px)")
 
     const [isNavMenuOpen, setIsNavMenuOpen] = useState(false)
-
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const router = useRouter()
 
@@ -51,6 +51,19 @@ export function AppLayoutHeader() {
         setIsNavMenuOpen(false)
     }
 
+    const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsNavMenuOpen(false);
+    }
+  };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <header className=" xl:w-[15.625rem] lg:w-[12.5rem] flex lg:flex-col justify-between">
@@ -91,7 +104,7 @@ export function AppLayoutHeader() {
 
             <Separator className="hidden lg:block bg-gray-200" />
 
-            <nav className={`h-full w-3/4 sm:w-1/2 lg:w-full px-4 py-5 absolute top-0 z-50 bg-gray-200 lg:block lg:static lg:bg-transparent transition-transform  ${isNavMenuOpen ? 'transform-[translateX(0%)]' : 'transform-[translateX(-100%)]'} lg:transform-[translateX(0%)]`}>
+            <nav ref={menuRef} className={`h-full w-3/4 sm:w-1/2 lg:w-full px-4 py-5 absolute top-0 z-50 bg-gray-200 lg:block lg:static lg:bg-transparent transition-transform  ${isNavMenuOpen ? 'transform-[translateX(0%)]' : 'transform-[translateX(-100%)]'} lg:transform-[translateX(0%)]`}>
                 <div className=" text-gray-600 mb-5 lg:hidden">
                     <Button variant={'ghost'} onClick={() => setIsNavMenuOpen(false)}>
                         <ArrowLeft />
@@ -151,7 +164,7 @@ export function AppLayoutHeader() {
             <DropdownMenu
                 modal>
                 <DropdownMenuTrigger asChild>
-                    <div className={`flex gap-3 p-4 items-center  transition-colors ${user ? 'lg:hover:bg-gray-200 cursor-pointer': 'pointer-events-none cursor-not-allowed'}`}>
+                    <div className={`flex gap-3 p-4 items-center  transition-colors ${user ? 'lg:hover:bg-gray-200 cursor-pointer' : 'pointer-events-none cursor-not-allowed'}`}>
                         <Avatar username={user?.name} imageUrl={user?.imageUrl} className="w-10 h-10 text-[14px]" />
                         <div className="lg:flex lg:flex-col hidden ">
                             {

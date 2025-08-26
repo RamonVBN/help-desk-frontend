@@ -76,7 +76,7 @@ export default function CalledDetails() {
 
     if (!called) {
 
-        return router.replace('/calleds')
+        return 
         
     }
 
