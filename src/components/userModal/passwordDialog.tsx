@@ -96,7 +96,7 @@ export function PasswordDialog({ closeUserDialog }: PasswordDialogProps) {
                                 </ErrorMessage>
                             ) :
 
-                                <span className="text-xs italic leading-[140%] text-gray-400">Mínimo de 6 digitos</span>
+                            <span className="text-xs italic leading-[140%] text-gray-400">Mínimo de 6 digitos</span>
                         }
                     </div>
                 </div>

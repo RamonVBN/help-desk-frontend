@@ -5,7 +5,6 @@ export interface Service {
     name: string
     price: number
     status: 'ACTIVE' | 'INACTIVE'
-
 }
 
 export async function getServices() {

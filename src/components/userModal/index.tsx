@@ -39,7 +39,7 @@ export function UserDialog() {
                             isNewPasswordModalOpen ? (
                                 <>
                                     <Button variant={'ghost'} onClick={() => handleChangeNewPasswordModal()}>
-                                        <ArrowLeft className="size-[1.125rem]" />
+                                        <ArrowLeft data-icon="arrow-left" className="size-[1.125rem]" />
                                     </Button>
                                     Alterar senha
                                 </>

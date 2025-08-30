@@ -2,6 +2,8 @@ import { cookies } from "next/headers";
 import { AppLayoutHeader } from "@/components/appLayoutHeader";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic'
+
 export default async function AppLayout({
     children,
 }: Readonly<{
@@ -11,10 +13,10 @@ export default async function AppLayout({
     const cookieStore = await cookies();
     const token = cookieStore.get('access_token');
 
-    if (!token) {
+    if (!token?.value) {
         return redirect("/sign-in")
     }
-    
+
     return (
         <div className="w-full min-h-screen bg-gray-100 bg-top-left flex flex-col lg:flex-row">
 

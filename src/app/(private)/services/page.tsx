@@ -24,6 +24,7 @@ import { getServices, Service } from "@/api/getServices"
 import { api } from "@/libs/axios"
 import { useState } from "react"
 import { useMediaQuery } from "usehooks-ts"
+import { EditButton } from "@/components/editButton"
 
 export default function Services() {
 
@@ -148,9 +149,7 @@ export default function Services() {
                                             }
                                                 >
                                                     <DialogTrigger asChild>
-                                                        <Button variant={'secondary'} size={'sm'} className="rounded-[5px] hover:bg-gray-200 hover:text-gray-500">
-                                                            <PenLine className="size-[14px]" />
-                                                        </Button>
+                                                        <EditButton/>
                                                     </DialogTrigger>
 
                                                     <ServiceModal handleCloseModal={handleCloseServiceTableModal} title="Serviço" serviceId={service.id} />

@@ -30,6 +30,7 @@ import { api } from "@/libs/axios"
 import { ClientProfileModal } from "@/components/clientProfileModal"
 import { useState } from "react"
 import { useMediaQuery } from "usehooks-ts"
+import { EditButton } from "@/components/editButton"
 
 
 export default function Clients() {
@@ -157,9 +158,7 @@ export default function Clients() {
                                                     return setClientTableModalOpenId(null)
                                                 }}>
                                                     <DialogTrigger asChild>
-                                                        <Button variant={'secondary'} size={'sm'} className="rounded-[5px] hover:bg-gray-200 hover:text-gray-500">
-                                                            <PenLine size={14}/>
-                                                        </Button>
+                                                        <EditButton/>
                                                     </DialogTrigger>
 
                                                     <ClientProfileModal handleCloseModal={handleCloseClientTableModal} clientId={client.id} />

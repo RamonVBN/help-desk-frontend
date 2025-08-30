@@ -12,12 +12,13 @@ import { Button } from "./ui/button"
 import { useForm } from "react-hook-form"
 import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { api } from "@/libs/axios"
 import { Client } from "@/api/getClients"
 import { ErrorMessage } from "./errorMessage"
 import { useEffect, useState } from "react"
 import { Separator } from "./ui/separator"
+import { User } from "@/api/getUser"
 
 const clientProfileFormSchema = z.object({
     name: z.string().trim().min(3, { error: 'Digite um nome válido.' }),
@@ -34,16 +35,25 @@ interface ClientProfileModal {
 export function ClientProfileModal({ clientId, handleCloseModal }: ClientProfileModal) {
 
     const queryClient = useQueryClient()
-    const clients = queryClient.getQueryData<Client[]>(['clients'])
-    
-    const [updatedClient, setUpdatedClient] = useState<Client>()
+
+    const {data: client} = useQuery<User>({
+        queryKey: ['clients', clientId],
+        queryFn: async () => {
+
+            const res = await api.get(`/users/${clientId}`)
+
+            const user = res.data.user
+
+            return user
+        }
+    })
 
     const { register, handleSubmit, setValue, reset, formState: { errors }, setFocus } = useForm<ClientProfileForm>({
         resolver: zodResolver(clientProfileFormSchema)
     })
 
     const { mutate: updateClientAccount } = useMutation({
-        mutationFn: ({ name, email }: { name: string, email: string }) => api.put(`/users/${updatedClient!.id}`, {
+        mutationFn: ({ name, email }: { name: string, email: string }) => api.put(`/users/${clientId}`, {
             name,
             email
         }),
@@ -64,21 +74,12 @@ export function ClientProfileModal({ clientId, handleCloseModal }: ClientProfile
     }
 
     useEffect(() => {
-        if (clientId && clients) {
-            const client = clients.find((currentClient) => currentClient.id === clientId)
-            setUpdatedClient(client)
+        if (client) {
+            reset({email: client.email, name: client.name})
         }
+    }, [client])
 
-        setFocus('name')
-    }, [clientId, clients])
-
-    useEffect(() => {
-        if (updatedClient) {
-            reset({email: updatedClient.email, name: updatedClient.name})
-        }
-    }, [updatedClient])
-
-    if (!updatedClient) {
+    if (!client) {
         
         return
     }
@@ -87,14 +88,14 @@ export function ClientProfileModal({ clientId, handleCloseModal }: ClientProfile
         <DialogContent onCloseAutoFocus={() => reset()} onOpenAutoFocus={(e) => e.preventDefault()}  className="p-0 gap-0">
             <DialogHeader className="py-5 px-7">
                 <DialogTitle className="mr-auto">Cliente</DialogTitle>
-                <DialogDescription className="sr-only">{`Exclua a conta do cliente ${updatedClient.name}`}</DialogDescription>
+                <DialogDescription className="sr-only">{`Exclua a conta do cliente ${client?.name}`}</DialogDescription>
             </DialogHeader>
 
             <Separator />
 
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
                 <div className="pb-8 pt-7 px-7 flex flex-col gap-5" >
-                    <Avatar imageUrl={updatedClient.imageUrl} username={updatedClient.name} className="w-12 h-12 text-[1.3125rem]" />
+                    <Avatar imageUrl={client.imageUrl} username={client.name} className="w-12 h-12 text-[1.3125rem]" />
                     <div className="flex flex-col gap-4">
 
                         <div>

@@ -36,6 +36,9 @@ export default function CreateCalled() {
     const router = useRouter()
 
     const { register, control, handleSubmit, watch, reset, formState: { errors }, setError, setValue } = useForm<CreateCalledForm>({
+        defaultValues: {
+            serviceId: undefined
+        },
         resolver: zodResolver(createCalledFormSchema)
     })
 
@@ -132,7 +135,8 @@ export default function CreateCalled() {
                                         control={control}
                                         render={({ field }) => (
                                             <Select
-                                                value={field.value}
+                                                // value={field.value}
+                                                defaultValue={field.value}
                                                 onValueChange={field.onChange}
                                             >
                                                 <div className="group flex flex-col">
@@ -198,8 +202,8 @@ export default function CreateCalled() {
                                 <div className='flex flex-col gap-4'>
                                     <div className='flex flex-col gap-0.5'>
                                         <Card.Description description='Categoria de serviço' />
-                                        <span className=' text-[0.875rem] leading-[140%] text-gray-200'>
-                                            {selectedService?.name}
+                                        <span data-testid="selectedService" className='text-[0.875rem] leading-[140%] text-gray-200 '>
+                                            {selectedService?.name ?? ''}
                                         </span>
                                     </div>
                                     <div className='flex flex-col gap-0.5'>

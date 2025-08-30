@@ -1,6 +1,5 @@
 import { TechnicianProfilePage } from "@/components/technicianProfilePage";
 
-
 export default function AddTechnician(){
 
     return (

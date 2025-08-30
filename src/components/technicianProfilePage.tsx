@@ -14,12 +14,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getTechnicians, Technician } from "@/api/getTechnicians";
 import { useParams, useRouter } from "next/navigation";
 import { api } from "@/libs/axios";
 import { AxiosError } from "axios";
 import { ErrorMessage } from "./errorMessage";
 import { useEffect } from "react";
+import { User } from "@/api/getUser";
 
 
 const technicianBaseProfileFormSchema = z.object({
@@ -53,19 +53,24 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
 
     const techId = params.id
 
-    const { data: technicians } = useQuery<Technician[]>({
-        refetchOnMount: 'always',
-        queryKey: ['technicians'],
-        queryFn: getTechnicians
-    })
+    const {data: technician} = useQuery<User>({
+        queryKey: ['technicians', techId],
+        queryFn: async () => {
 
-    const technician = technicians?.find((tech) => tech.id === techId)
+            const res = await api.get(`/users/${techId}`)
+
+            const user = res.data.user
+            
+            return user
+        }
+
+    })
 
     const { register, handleSubmit, control, setValue, formState: { errors }, setError, reset } = useForm<TechnicianUpdateProfileForm | TechnicianCreateProfileForm>({
         defaultValues: {
             name: technician ? technician.name : '',
             email: technician ? technician.email : '',
-            availableHours: technician ? technician.technician.availableHours : [],
+            availableHours: technician ? technician.availableHours : [],
             password: technician && schema === createTechnicianProfileFormSchema ? '******' : '',
             role: 'TECHNICIAN'
         },
@@ -141,7 +146,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
 
     useEffect(() => {
         if (technician) {
-            reset({name: technician.name, email: technician.email, availableHours: technician.technician.availableHours})
+            reset({name: technician.name, email: technician.email, availableHours: technician.availableHours})
         }
     }, [technician])
 

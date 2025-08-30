@@ -35,7 +35,7 @@ export function AppLayoutHeader() {
 
     const router = useRouter()
 
-    const { data: user, isLoading } = useQuery<User>({
+    const { data: user } = useQuery<User>({
         queryKey: ['user'],
         queryFn: getUser
     })
@@ -52,10 +52,10 @@ export function AppLayoutHeader() {
     }
 
     const handleClickOutside = (event: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      setIsNavMenuOpen(false);
-    }
-  };
+        if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            setIsNavMenuOpen(false);
+        }
+    };
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -64,6 +64,7 @@ export function AppLayoutHeader() {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
 
     return (
         <header className=" xl:w-[15.625rem] lg:w-[12.5rem] flex lg:flex-col justify-between">
