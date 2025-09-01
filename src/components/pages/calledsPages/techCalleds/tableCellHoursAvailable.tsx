@@ -1,7 +1,5 @@
-
 import { cn } from "@/utils/cn"
-import { AvailableHourTag } from "./availableHourTag"
-
+import { AvailableHourTag } from "../../../availableHourTag"
 
 interface TableHoursAvailableProps {
     

@@ -1,13 +1,13 @@
-import { Button } from "../ui/button";
-import { Input } from "../input";
-import { Separator } from "../ui/separator";
+import { Button } from "../../../ui/button";
+import { Input } from "../../../input";
+import { Separator } from "../../../ui/separator";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/libs/axios";
 import { getUser, User } from "@/api/getUser";
-import { ErrorMessage } from "../errorMessage";
+import { ErrorMessage } from "../../../errorMessage";
 import { AxiosError } from "axios";
 
 interface PasswordDialogProps {

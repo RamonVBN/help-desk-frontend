@@ -1,10 +1,10 @@
 'use client'
 
 import { ArrowLeft, BriefcaseBusiness, ClipboardList, LogOut, Menu, Plus, Trash, Upload, Users, Wrench } from "lucide-react";
-import Image from "next/image";
+import Image from "next/image"
 
 import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,25 +13,25 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { useEffect, useRef, useState } from "react";
-import { Avatar } from "@/components/avatar";
+import { useEffect, useRef, useState } from "react"
+import { Avatar } from "@/components/avatar"
 
-import { UserDialog } from "@/components/userModal";
-import { NavLink } from "@/components/navLink";
-import { api } from "@/libs/axios";
-import { useRouter } from "next/navigation";
+import { UserDialog } from "@/components/layouts/appLayoutHeader/userModal"
+import { NavLink } from "@/components/layouts/appLayoutHeader/navLink"
+import { api } from "@/libs/axios"
+import { useRouter } from "next/navigation"
 
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { getUser, User } from "@/api/getUser";
+import { getUser, User } from "@/api/getUser"
 import { useMediaQuery } from "usehooks-ts"
-
 
 export function AppLayoutHeader() {
 
     const isSm = useMediaQuery("(min-width: 640px)")
 
     const [isNavMenuOpen, setIsNavMenuOpen] = useState(false)
-    const menuRef = useRef<HTMLDivElement>(null);
+
+    const menuRef = useRef<HTMLDivElement>(null)
 
     const router = useRouter()
 
@@ -53,17 +53,17 @@ export function AppLayoutHeader() {
 
     const handleClickOutside = (event: MouseEvent) => {
         if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-            setIsNavMenuOpen(false);
+            setIsNavMenuOpen(false)
         }
     };
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside)
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
 
 
     return (

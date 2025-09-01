@@ -1,18 +1,17 @@
 'use client'
 
-import { CircleCheckBig, Clock2, Divide } from "lucide-react";
-import { EditButton } from "./editButton";
-import { Button } from "./ui/button";
+import { CircleCheckBig, Clock2 } from "lucide-react";
+import { EditButton } from "../../../editButton";
+import { Button } from "../../../ui/button";
 
-import * as Card from '@/components/card'
-import { CardTitle } from "./card/card-title";
-import { CardDescription } from "./card/card-description";
-import { Separator } from "./ui/separator";
-import { Avatar } from "./avatar";
-import { CalledStatus } from "./calledStatus";
+import * as Card from '@/components/card';
+import { CardTitle } from "../../../card/card-title";
+import { CardDescription } from "../../../card/card-description";
+import { Separator } from "../../../ui/separator";
+import { Avatar } from "../../../avatar";
+import { CalledStatus } from "../components/calledStatus";
 import Link from "next/link";
 import { Called } from "@/api/getCalleds";
-import { formatDate } from "@/utils/formatDate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/libs/axios";
 import { format } from "date-fns";
@@ -65,7 +64,7 @@ export function TechCalledCard({ called }: TechCalledCardProps) {
                         }
                     </div>
                 </div>
-
+                
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="flex flex-col">
                         <CardTitle className="text-base" title={called.title} />
@@ -86,7 +85,7 @@ export function TechCalledCard({ called }: TechCalledCardProps) {
                 </div>
             </div>
 
-            <Separator className="bg-gray-500" />
+            <Separator className="bg-gray-500"/>
 
             <div className="mt-4 flex justify-between">
                 <div className="flex gap-1.5 items-center">

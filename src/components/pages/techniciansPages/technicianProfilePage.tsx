@@ -17,9 +17,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 import { api } from "@/libs/axios";
 import { AxiosError } from "axios";
-import { ErrorMessage } from "./errorMessage";
 import { useEffect } from "react";
 import { User } from "@/api/getUser";
+import { ErrorMessage } from "../../errorMessage";
 
 
 const technicianBaseProfileFormSchema = z.object({

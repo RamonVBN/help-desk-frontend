@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Button } from "../../../components/ui/button";
 
 import * as Card from '@/components/card'
-import { AuthForm } from "@/components/authForm";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { AuthForm } from "@/components/pages/authPages/authForm";
 
 export default async function SignUp() {
 
@@ -24,7 +24,7 @@ export default async function SignUp() {
                     <Card.Description description="Informe seu nome, e-mail e senha" />
                 </div>
 
-                <AuthForm />
+                <AuthForm/>
             </Card.Root>
 
 

@@ -1,14 +1,18 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query";
-import { CalledStatus } from "./calledStatus";
-import { TechCalledCard } from "./techCalledCard";
 import { Called, getCalleds, } from "@/api/getCalleds";
+import { CalledStatus } from "@/components/pages/calledsPages/components/calledStatus";
+import { TechCalledCard } from "@/components/pages/calledsPages/techCalleds/techCalledCard";
 
+interface TechCalledsProps {
 
-export function TechCalleds() {
+    initialCalledsData: Called[]
+}
 
-    const {data: techCalleds} = useQuery<Called[]>({
+export function TechCalleds({initialCalledsData}: TechCalledsProps) {
+
+    const {data: techCalleds = initialCalledsData} = useQuery<Called[]>({
         queryKey: ['calleds'],
         queryFn: getCalleds,
     })

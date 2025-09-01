@@ -1,4 +1,4 @@
-import { TechnicianProfilePage } from "@/components/technicianProfilePage";
+import { TechnicianProfilePage } from "@/components/pages/techniciansPages/technicianProfilePage";
 
 export default function AddTechnician(){
 

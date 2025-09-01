@@ -1,17 +1,17 @@
-import { Button } from "../ui/button";
+import { Button } from "../../../ui/button";
 import { Trash, Upload } from "lucide-react";
-import { Input } from "../input";
-import { AvailableHourTag } from "../availableHourTag";
+import { Input } from "../../../input";
+import { AvailableHourTag } from "../../../availableHourTag";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUser} from "@/api/getUser";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar } from "../avatar";
+import { Avatar } from "../../../avatar";
 import { useEffect, useState } from "react";
 import { api } from "@/libs/axios";
-import { Separator } from "../ui/separator";
-import { ErrorMessage } from "../errorMessage";
+import { Separator } from "../../../ui/separator";
+import { ErrorMessage } from "../../../errorMessage";
 import { AxiosError } from "axios";
 import { User } from "@/utils/getServerUser";
 

@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { ProfileDialog } from "./profileDialog"
 import { PasswordDialog } from "./passwordDialog"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Button } from "../ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../../../ui/dialog"
+import { Button } from "../../../ui/button"
 import { ArrowLeft, CircleUser } from "lucide-react"
-import { DropdownMenuItem } from "../ui/dropdown-menu"
+import { DropdownMenuItem } from "../../../ui/dropdown-menu"
 
 
 export function UserDialog() {

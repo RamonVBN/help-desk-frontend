@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import * as Card from '@/components/card'
 
-import { CalledStatus } from "@/components/calledStatus";
+import { CalledStatus } from "@/components/pages/calledsPages/components/calledStatus";
 import { Avatar } from "@/components/avatar";
 import { Separator } from "@/components/ui/separator";
 
@@ -14,22 +14,20 @@ import {
     Dialog,
     DialogTrigger
 } from "@/components/ui/dialog"
-import { ServiceModal } from "@/components/serviceModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUser, User } from "@/api/getUser";
 import { Called } from "@/api/getCalleds";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { formatPrice } from "@/utils/formatPrice";
 import { format } from "date-fns";
 import { api } from "@/libs/axios";
 import { useState } from "react";
+import { ServiceModal } from "@/components/pages/servicesPage/serviceModal";
 
 
 export default function CalledDetails() {
 
     const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false)
-
-    const router = useRouter()
 
     const params = useParams()
 
