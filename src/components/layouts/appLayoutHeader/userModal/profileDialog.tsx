@@ -3,7 +3,7 @@ import { Trash, Upload } from "lucide-react";
 import { Input } from "../../../input";
 import { AvailableHourTag } from "../../../availableHourTag";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser} from "@/api/getUser";
+import { getUser} from "@/api/clientFetchs/getUser";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

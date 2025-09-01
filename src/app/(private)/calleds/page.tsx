@@ -1,41 +1,10 @@
-
 import { ClientCalleds } from "@/components/pages/calledsPages/clientCalleds"
 import { AdminCalleds } from "@/components/pages/calledsPages/adminCalleds"
 
-import { cookies } from "next/headers";
 import { TechCalleds } from "@/components/pages/calledsPages/techCalleds";
-import { getToken } from "@/api/getToken";
+import { getUserServer } from "@/api/serverFetchs/getUser";
+import { getCalledsServer } from "@/api/serverFetchs/getCalleds";
 
-async function getUserServer() {
-    
-    const token = await getToken()
-
-    const res = await fetch("http://localhost:3333/users/me", {
-        cache: 'no-store',
-        headers: {
-            Cookie: `${token?.name}=${token?.value}`
-        }  
-    })
-
-    const body = await res.json()
-    return body.user
-}
-
-async function getCalledsServer(){
-
-    const token = await getToken()
-
-    const res = await fetch("http://localhost:3333/calleds", {
-        cache: 'no-store',
-        headers: {
-            Cookie: `${token?.name}=${token?.value}`
-        }  
-    })
-
-    const body = await res.json()
-
-    return body.calleds
-}
 
 export default async function Calleds() {
 

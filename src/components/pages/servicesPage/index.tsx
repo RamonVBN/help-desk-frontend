@@ -20,7 +20,7 @@ import {
 import { Ban, CircleCheck, Plus } from "lucide-react"
 import { ServiceModal } from "@/components/serviceModal"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getServices, Service } from "@/api/getServices"
+import { getServices, Service } from "@/api/clientFetchs/getServices"
 import { api } from "@/libs/axios"
 import { useState } from "react"
 import { EditButton } from "@/components/editButton"

@@ -15,8 +15,8 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser, User } from "@/api/getUser";
-import { Called } from "@/api/getCalleds";
+import { getUser, User } from "@/api/clientFetchs/getUser";
+import { Called } from "@/api/clientFetchs/getCalleds";
 import { useParams } from "next/navigation";
 import { formatPrice } from "@/utils/formatPrice";
 import { format } from "date-fns";

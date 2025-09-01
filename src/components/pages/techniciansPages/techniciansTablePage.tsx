@@ -16,7 +16,7 @@ import Link from "next/link";
 import { EditButton } from "@/components/editButton";
 import { TableCellHoursAvailable } from "@/components/pages/calledsPages/techCalleds/tableCellHoursAvailable";
 import { useQuery } from "@tanstack/react-query";
-import { getTechnicians, Technician } from "@/api/getTechnicians";
+import { getTechnicians, Technician } from "@/api/clientFetchs/getTechnicians";
 
 interface TechniciansTablePageProps {
 

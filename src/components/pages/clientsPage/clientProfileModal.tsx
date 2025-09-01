@@ -14,11 +14,11 @@ import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { api } from "@/libs/axios"
-import { Client } from "@/api/getClients"
+import { Client } from "@/api/clientFetchs/getClients"
 import { ErrorMessage } from "./errorMessage"
 import { useEffect, useState } from "react"
 import { Separator } from "./ui/separator"
-import { User } from "@/api/getUser"
+import { User } from "@/api/clientFetchs/getUser"
 
 const clientProfileFormSchema = z.object({
     name: z.string().trim().min(3, { error: 'Digite um nome válido.' }),

@@ -1,20 +1,7 @@
 import { ClientsTablePage } from "@/components/pages/clientsPage/clientsTablePage";
-import { getToken } from "@/api/getToken";
+import { getToken } from "@/api/utils/getToken";
+import { getClientsServer } from "@/api/serverFetchs/getClients";
 
-async function getClientsServer(){
-
-    const token = await getToken()
-
-    const res = await fetch('http://localhost:3333/users?role=CLIENT', {
-        headers: {
-            Cookie: `${token?.name}=${token?.value}`
-        }
-    })
-
-    const data = await res.json()
-
-    return data.users
-}
 
 export default async function Clients() {
 

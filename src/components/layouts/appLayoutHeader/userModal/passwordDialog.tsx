@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/libs/axios";
-import { getUser, User } from "@/api/getUser";
+import { getUser, User } from "@/api/clientFetchs/getUser";
 import { ErrorMessage } from "../../../errorMessage";
 import { AxiosError } from "axios";
 

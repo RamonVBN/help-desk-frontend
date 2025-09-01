@@ -18,7 +18,7 @@ import { useParams, useRouter } from "next/navigation";
 import { api } from "@/libs/axios";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
-import { User } from "@/api/getUser";
+import { User } from "@/api/clientFetchs/getUser";
 import { ErrorMessage } from "../../errorMessage";
 
 

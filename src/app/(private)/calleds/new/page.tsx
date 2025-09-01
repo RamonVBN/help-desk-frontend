@@ -15,7 +15,7 @@ import {
     SelectValue
 } from "@/components/ui/select"
 import { api } from '@/libs/axios'
-import { getServices, Service } from '@/api/getServices'
+import { getServices, Service } from '@/api/clientFetchs/getServices'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'

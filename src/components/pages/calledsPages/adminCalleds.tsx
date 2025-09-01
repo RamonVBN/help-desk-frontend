@@ -15,7 +15,7 @@ import { CalledStatus } from "@/components/pages/calledsPages/components/calledS
 
 import Link from "next/link"
 import { useQuery } from "@tanstack/react-query"
-import { Called, getCalleds } from "@/api/getCalleds"
+import { Called, getCalleds } from "@/api/clientFetchs/getCalleds"
 
 import { format } from 'date-fns'
 import { formatPrice } from "@/utils/formatPrice"

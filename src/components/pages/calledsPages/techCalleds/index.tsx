@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query";
-import { Called, getCalleds, } from "@/api/getCalleds";
+import { Called, getCalleds, } from "@/api/clientFetchs/getCalleds";
 import { CalledStatus } from "@/components/pages/calledsPages/components/calledStatus";
 import { TechCalledCard } from "@/components/pages/calledsPages/techCalleds/techCalledCard";
 
