@@ -5,6 +5,16 @@ import * as Card from '@/components/card'
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { AuthForm } from "@/components/pages/authPages/authForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Cadastro",
+  description: "Crie sua conta do HelpDesk",
+  robots: {
+    index: false, // não indexa
+    follow: true, // ainda permite seguir links na página
+  },
+};
 
 export default async function SignUp() {
 

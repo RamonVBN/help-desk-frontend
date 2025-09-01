@@ -39,7 +39,6 @@ export function AuthForm() {
             return router.replace('/calleds')
         },
         onError(error) {
-
             if (error instanceof AxiosError) {
                 const message = error.response?.data.message
                 setError('root', { type: 'server', message })

@@ -4,7 +4,7 @@ export async function getCalledsServer(){
 
     const token = await getToken()
 
-    const res = await fetch("http://localhost:3333/calleds", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/calleds`, {
         cache: 'no-store',
         headers: {
             Cookie: `${token?.name}=${token?.value}`

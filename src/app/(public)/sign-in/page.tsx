@@ -5,6 +5,16 @@ import * as Card from '@/components/card'
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { AuthForm } from "@/components/pages/authPages/authForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Entrar",
+  description: "Acesse sua conta do HelpDesk",
+  robots: {
+    index: false, // não indexa
+    follow: true, // ainda permite seguir links na página
+  },
+};
 
 
 export default async function SignIn() {

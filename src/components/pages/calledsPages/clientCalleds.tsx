@@ -18,6 +18,7 @@ import { getCalleds } from "@/api/clientFetchs/getCalleds"
 import { formatPrice } from "@/utils/formatPrice"
 import { format } from "date-fns"
 import { Called } from "@/api/types"
+import { useEffect } from "react"
 
 interface ClientCalledsProps {
 
@@ -35,6 +36,12 @@ export function ClientCalleds({initialCalledsData}: ClientCalledsProps) {
         
         return
     }
+
+    useEffect(() => {
+
+        document.title = 'Meus chamados | HelpDesk'
+    }, [])
+
 
     if (clientCalleds.length < 1) {
         

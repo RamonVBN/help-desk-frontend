@@ -1,9 +1,11 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query";
-import { Called, getCalleds, } from "@/api/clientFetchs/getCalleds";
+import { getCalleds, } from "@/api/clientFetchs/getCalleds";
 import { CalledStatus } from "@/components/pages/calledsPages/components/calledStatus";
 import { TechCalledCard } from "@/components/pages/calledsPages/techCalleds/techCalledCard";
+import { Called } from "@/api/types";
+import { useEffect } from "react";
 
 interface TechCalledsProps {
 
@@ -22,6 +24,11 @@ export function TechCalleds({initialCalledsData}: TechCalledsProps) {
     const openCalleds = techCalleds?.filter((called) => called.status === 'OPEN')
 
     const closedCalleds = techCalleds?.filter((called) => called.status === 'CLOSED')
+
+    useEffect(() => {
+    
+            document.title = 'Meus chamados | HelpDesk'
+        }, [])
 
     return (
         <div className="flex flex-col gap-4 md:gap-6 h-full w-full">
