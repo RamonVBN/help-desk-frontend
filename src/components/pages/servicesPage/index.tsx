@@ -18,12 +18,12 @@ import {
 } from "@/components/ui/dialog"
 
 import { Ban, CircleCheck, Plus } from "lucide-react"
-import { ServiceModal } from "@/components/serviceModal"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getServices, Service } from "@/api/clientFetchs/getServices"
 import { api } from "@/libs/axios"
 import { useState } from "react"
 import { EditButton } from "@/components/editButton"
+import { ServiceModal } from "./serviceModal"
 
 interface ServicesPageTableProps {
     initialServicesData: Service[]

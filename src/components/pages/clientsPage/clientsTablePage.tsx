@@ -25,12 +25,12 @@ import {
 import { Trash } from "lucide-react"
 import { Separator } from "@radix-ui/react-separator"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Client, getClients } from "@/api/clientFetchs/getClients"
+import { getClients } from "@/api/clientFetchs/getClients"
 import { api } from "@/libs/axios"
-import { ClientProfileModal } from "@/components/clientProfileModal"
 import { useState } from "react"
 import { EditButton } from "@/components/editButton"
-import { User } from "@/api/clientFetchs/getUser"
+import { ClientProfileModal } from "./clientProfileModal"
+import { Client, User } from "@/api/types"
 
 interface ClientsTablePageProps {
 

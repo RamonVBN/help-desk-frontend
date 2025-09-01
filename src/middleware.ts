@@ -68,7 +68,7 @@ export function middleware(req: NextRequest) {
 
         if (!isAllowed) {
           const redirectUrl = req.nextUrl.clone()
-          redirectUrl.pathname = "/calleds" 
+          redirectUrl.pathname = "/calleds"
           return NextResponse.redirect(redirectUrl)
         }
       }

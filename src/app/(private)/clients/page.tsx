@@ -1,7 +1,5 @@
 import { ClientsTablePage } from "@/components/pages/clientsPage/clientsTablePage";
-import { getToken } from "@/api/utils/getToken";
 import { getClientsServer } from "@/api/serverFetchs/getClients";
-
 
 export default async function Clients() {
 

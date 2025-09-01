@@ -1,11 +1,6 @@
 import { api } from "@/libs/axios";
 
-export interface Service {
-    id: string
-    name: string
-    price: number
-    status: 'ACTIVE' | 'INACTIVE'
-}
+
 
 export async function getServices() {
 

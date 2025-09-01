@@ -5,20 +5,18 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 
-import { Avatar } from "./avatar"
-import { Input } from "./input"
-import { Button } from "./ui/button"
-
 import { useForm } from "react-hook-form"
 import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { api } from "@/libs/axios"
-import { Client } from "@/api/clientFetchs/getClients"
-import { ErrorMessage } from "./errorMessage"
-import { useEffect, useState } from "react"
-import { Separator } from "./ui/separator"
-import { User } from "@/api/clientFetchs/getUser"
+import { useEffect } from "react"
+import { Separator } from "@radix-ui/react-separator"
+import { Avatar } from "@/components/avatar"
+import { Input } from "@/components/input"
+import { ErrorMessage } from "@/components/errorMessage"
+import { Button } from "@/components/ui/button"
+import { User } from "@/api/types"
 
 const clientProfileFormSchema = z.object({
     name: z.string().trim().min(3, { error: 'Digite um nome válido.' }),

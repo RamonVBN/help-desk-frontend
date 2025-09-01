@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CircleCheckBig, Clock2, Plus, Trash } from "lucide-react";
+import { ArrowLeft, CircleCheckBig, Clock2, Frown, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 
 import * as Card from '@/components/card'
@@ -15,14 +15,14 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser, User } from "@/api/clientFetchs/getUser";
-import { Called } from "@/api/clientFetchs/getCalleds";
+import { getUser } from "@/api/clientFetchs/getUser";
 import { useParams } from "next/navigation";
 import { formatPrice } from "@/utils/formatPrice";
 import { format } from "date-fns";
 import { api } from "@/libs/axios";
 import { useState } from "react";
 import { ServiceModal } from "@/components/pages/servicesPage/serviceModal";
+import { Called, User } from "@/api/types";
 
 
 export default function CalledDetails() {
@@ -68,15 +68,21 @@ export default function CalledDetails() {
         }
     })
 
-    function handleCloseAddServiceModal(){
+    function handleCloseAddServiceModal() {
         setIsAddServiceModalOpen(false)
     }
 
     if (!called) {
 
-        return 
-        
+        return (
+            <div className="w-full h-full flex items-center justify-center text-xl font-bold gap-2">
+
+                Esse chamado não existe
+                <Frown size={24}/>
+            </div>
+        )
     }
+
 
     return (
         <div className="w-full flex flex-col lg:items-center">
@@ -108,7 +114,7 @@ export default function CalledDetails() {
                                                             'Em atendimento'
                                                         )
                                                     }
-                                                    
+
                                                     {
                                                         user?.role === 'TECHNICIAN' && (
                                                             'Iniciar atendimento'

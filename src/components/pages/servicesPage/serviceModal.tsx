@@ -6,18 +6,18 @@ import {
     DialogDescription
 } from "@/components/ui/dialog"
 import { Separator } from "@radix-ui/react-separator"
-import { Input } from "./input"
-import { Button } from "./ui/button"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getServices, Service } from "@/api/clientFetchs/getServices"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { api } from "@/libs/axios"
 import { usePathname } from "next/navigation"
 import { AxiosError } from "axios"
-import { ErrorMessage } from "./errorMessage"
 import { useEffect, useState } from "react"
+import { Input } from "@/components/input"
+import { ErrorMessage } from "@/components/errorMessage"
+import { Button } from "@/components/ui/button"
+import { Service } from "@/api/types"
 
 interface ServiceModalProps {
     serviceId?: string

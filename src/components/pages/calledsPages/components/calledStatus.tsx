@@ -3,7 +3,7 @@ import { CircleCheckBig, CircleHelp, Clock2 } from "lucide-react";
 interface CalledStatus {
 
     status: 'OPEN' | 'PROGRESS' | 'CLOSED'
-    minimalist?: true | false
+    minimalist?: boolean
 }
 
 export function CalledStatus({ status, minimalist = false }: CalledStatus) {

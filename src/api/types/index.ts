@@ -1,0 +1,5 @@
+export * from './calleds'
+export * from './clients'
+export * from './services'
+export * from './technicians'
+export * from './user'

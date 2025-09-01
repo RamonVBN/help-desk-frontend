@@ -1,15 +1,15 @@
 'use client'
 
-import { Input } from "./input";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from "@/libs/axios";
-import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { ErrorMessage } from "./errorMessage";
 import { AxiosError } from "axios";
+import { Input } from "@/components/input";
+import { ErrorMessage } from "@/components/errorMessage";
+import { Button } from "@/components/ui/button";
 
 const authFormSchema = z.object({
 

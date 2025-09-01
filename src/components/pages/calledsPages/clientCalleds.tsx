@@ -14,9 +14,10 @@ import Link from "next/link"
 import { Button } from "../../ui/button"
 import { Eye, Frown } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
-import { Called, getCalleds } from "@/api/clientFetchs/getCalleds"
+import { getCalleds } from "@/api/clientFetchs/getCalleds"
 import { formatPrice } from "@/utils/formatPrice"
 import { format } from "date-fns"
+import { Called } from "@/api/types"
 
 interface ClientCalledsProps {
 

@@ -22,8 +22,9 @@ import { api } from "@/libs/axios"
 import { useRouter } from "next/navigation"
 
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { getUser, User } from "@/api/clientFetchs/getUser"
+import { getUser } from "@/api/clientFetchs/getUser"
 import { useMediaQuery } from "usehooks-ts"
+import { User } from "@/api/types";
 
 export function AppLayoutHeader() {
 

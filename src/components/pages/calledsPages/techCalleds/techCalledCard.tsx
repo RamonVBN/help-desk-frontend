@@ -11,10 +11,10 @@ import { Separator } from "../../../ui/separator";
 import { Avatar } from "../../../avatar";
 import { CalledStatus } from "../components/calledStatus";
 import Link from "next/link";
-import { Called } from "@/api/clientFetchs/getCalleds";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/libs/axios";
 import { format } from "date-fns";
+import { Called } from "@/api/types";
 
 interface TechCalledCardProps {
     called: Called

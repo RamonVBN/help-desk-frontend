@@ -15,13 +15,14 @@ import {
     SelectValue
 } from "@/components/ui/select"
 import { api } from '@/libs/axios'
-import { getServices, Service } from '@/api/clientFetchs/getServices'
+import { getServices } from '@/api/clientFetchs/getServices'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
+import { Service } from '@/api/types'
 
 const createCalledFormSchema = z.object({
     title: z.string().trim().min(3, { error: 'Digite um título válido.' }),
