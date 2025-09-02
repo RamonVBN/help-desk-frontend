@@ -1,6 +1,7 @@
 import test, { expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
 
+
 test('Calleds page', async ({ context, page }) => {
 
     await context.addCookies([{
@@ -9,70 +10,6 @@ test('Calleds page', async ({ context, page }) => {
         domain: 'localhost',
         path: '/',
     }])
-
-    await page.route("**/users/me", async (route) => {
-        await route.fulfill({
-            status: 200,
-            contentType: "application/json",
-            body: JSON.stringify({
-                user: {
-                    id: 1,
-                    name: "Ramon",
-                    email: "ramon@teste.com",
-                    role: 'ADMIN',
-                    imageUrl: null,
-                    availableHours: [],
-                }
-            }),
-        })
-    })
-
-    await page.route("**/calleds", async (route) => {
-        await route.fulfill({
-            status: 200,
-            contentType: "application/json",
-            body: JSON.stringify({
-                calleds: [
-                    {
-                        id: '1',
-                        title: 'Teste Mock',
-                        description: 'Testando',
-                        status: 'OPEN',
-                        createdAt: '2025-08-28T05:30:32.868Z',
-                        updatedAt: '2025-08-28T05:30:32.868Z',
-                        service: {
-                            id: '1',
-                            name: 'Serviço de teste',
-                            price: 19,
-                            status: 'INACTIVE',
-                        },
-                        client: {
-                            id: '1',
-                            name: 'Cliente da Silva',
-                            email: 'client@test.com',
-                            imageUrl: null,
-                        },
-
-                        technician: {
-                            id: '1',
-                            name: 'Técnico Oliveira',
-                            email: 'tech@test.com',
-                            imageUrl: null,
-                        },
-
-                        additionalServices: [
-                            {
-                                id: '1',
-                                description: 'Descrição de teste',
-                                price: 10,
-                            }
-                        ]
-
-                    }
-                ]
-            }),
-        })
-    })
 
     await page.route("**/calleds/*", async (route) => {
         const type = route.request().resourceType()
