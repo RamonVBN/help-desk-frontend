@@ -19,11 +19,12 @@ import {
 
 import { Ban, CircleCheck, Plus } from "lucide-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getServices, Service } from "@/api/clientFetchs/getServices"
+import { getServices } from "@/api/clientFetchs/getServices"
 import { api } from "@/libs/axios"
 import { useState } from "react"
 import { EditButton } from "@/components/editButton"
 import { ServiceModal } from "./serviceModal"
+import { Service } from "@/api/types"
 
 interface ServicesPageTableProps {
     initialServicesData: Service[]
