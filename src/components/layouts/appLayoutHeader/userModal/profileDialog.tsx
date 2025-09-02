@@ -13,7 +13,7 @@ import { api } from "@/libs/axios";
 import { Separator } from "../../../ui/separator";
 import { ErrorMessage } from "../../../errorMessage";
 import { AxiosError } from "axios";
-import { User } from "@/utils/getServerUser";
+import { User } from "@/api/types";
 
 interface ProfileDialogProps {
     closeUserDialog: () => void
