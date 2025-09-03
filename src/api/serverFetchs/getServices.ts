@@ -4,7 +4,7 @@ export async function getServicesServer(){
 
     const token = await getToken()
 
-    const res = await fetch(`http://localhost:3000/api/services`, {
+    const res = await fetch(`https://help-desk-frontend-seven.vercel.app/api/services`, {
         headers: {
             Cookie: `${token?.name}=${token?.value}`
         }
