@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from "@/libs/axios";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { Input } from "@/components/input";
 import { ErrorMessage } from "@/components/errorMessage";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,7 @@ export function AuthForm() {
     })
 
     const { mutate: createSession, isPending: isCreatingSession } = useMutation({
-        mutationFn: ({ email, password }: AuthForm) => api.post('/sessions', {
+        mutationFn: ({ email, password }: AuthForm) => axios.post('/api/sessions', {
             email,
             password
         }),
