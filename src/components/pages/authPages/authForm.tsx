@@ -36,8 +36,7 @@ export function AuthForm() {
             password
         }),
         onSuccess: () => {
-            // return router.replace('/calleds')
-            return window.location.href = '/calleds'
+            return router.replace('/calleds')
         },
         onError(error) {
             if (error instanceof AxiosError) {
