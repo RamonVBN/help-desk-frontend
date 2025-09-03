@@ -58,5 +58,5 @@ async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>
     response.headers.set("set-cookie", setCookie);
   }
 
-  return response;
+  return response.json();
 }
