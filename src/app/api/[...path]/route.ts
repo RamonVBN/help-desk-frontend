@@ -47,9 +47,8 @@ async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>
   });
 
   // Copia a resposta
-
-  const resBody = await backendRes.json()
-  const response = new NextResponse(resBody, {
+  
+  const response = new NextResponse(backendRes.body, {
     status: backendRes.status,
     headers: backendRes.headers,
   });
