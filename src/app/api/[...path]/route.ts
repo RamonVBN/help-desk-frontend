@@ -47,7 +47,9 @@ async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>
   });
 
   // Copia a resposta
-  const response = new NextResponse(backendRes.body, {
+
+  const resBody = await backendRes.json()
+  const response = new NextResponse(resBody, {
     status: backendRes.status,
     headers: backendRes.headers,
   });
@@ -58,5 +60,5 @@ async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>
     response.headers.set("set-cookie", setCookie);
   }
 
-  return response.json();
+  return response;
 }
