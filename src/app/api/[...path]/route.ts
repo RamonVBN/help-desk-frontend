@@ -25,7 +25,6 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ pa
 // Função central de proxy
 
 async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>) {
-
   const { path: rootPath } = await params
   const path = rootPath.join("/");
   const targetUrl = `${BACKEND_URL}/${path.replace(/^api\//, "")}${req.nextUrl.search}`;
