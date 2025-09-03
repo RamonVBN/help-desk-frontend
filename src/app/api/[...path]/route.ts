@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }>}) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   return handleProxy(req, params);
 }
 
@@ -47,7 +47,6 @@ async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>
   });
 
   // Copia a resposta
-  
   const response = new NextResponse(backendRes.body, {
     status: backendRes.status,
     headers: backendRes.headers,
