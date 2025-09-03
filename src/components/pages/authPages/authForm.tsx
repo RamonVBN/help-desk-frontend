@@ -10,6 +10,7 @@ import { AxiosError } from "axios";
 import { Input } from "@/components/input";
 import { ErrorMessage } from "@/components/errorMessage";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 const authFormSchema = z.object({
 
@@ -26,7 +27,7 @@ export function AuthForm() {
 
     const router = useRouter()
 
-    const { register, handleSubmit, setValue, formState: { errors }, setError } = useForm<AuthForm>({
+    const { register, handleSubmit, setValue, formState: { errors }, setError, setFocus } = useForm<AuthForm>({
         resolver: zodResolver(authFormSchema)
     })
 
@@ -83,6 +84,19 @@ export function AuthForm() {
         return setValue("name", valorInput.replace(/[^a-zA-ZÀ-ÿ\s]/g, ""))
         // permite letras, acentos e espaços
     }
+
+    useEffect(() => {
+
+        if (pathname === 'sign-in') {
+            
+            setFocus('email')
+            return
+
+        } 
+
+        setFocus('name')
+
+    }, [])
 
     return (
 

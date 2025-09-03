@@ -49,7 +49,7 @@ export function ClientsTablePage({initialClientsData}: ClientsTablePageProps) {
     })
 
     const { mutate: deleteClientAccount } = useMutation({
-        mutationFn: (clientId: string) => api.delete(`/users/clients/${clientId}`),
+        mutationFn: (clientId: string) => api.delete(`/users/${clientId}`),
         onSuccess: () => {
 
             queryClient.invalidateQueries({ queryKey: ['clients'] })
