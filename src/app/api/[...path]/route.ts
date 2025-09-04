@@ -51,10 +51,12 @@ async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>
     headers: backendRes.headers,
   });
 
-  // Repassa os cookies
-  const setCookie = backendRes.headers.get("set-cookie");
-  if (setCookie) {
-    response.headers.set("set-cookie", setCookie);
+  // Simple cookie passthrough
+  const setCookieHeaders = backendRes.headers.getSetCookie();
+  if (setCookieHeaders && setCookieHeaders.length > 0) {
+    setCookieHeaders.forEach((cookieHeader) => {
+      response.headers.append('set-cookie', cookieHeader);
+    });
   }
 
   return response;
