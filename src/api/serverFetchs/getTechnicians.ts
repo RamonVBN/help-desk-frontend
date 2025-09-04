@@ -1,10 +1,11 @@
 import { getToken } from "../utils/getToken"
 
-export async function getTechniciansServer(){
+export async function getTechniciansServer() {
 
     const token = await getToken()
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users?role=TECHNICIAN`, {
+    const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL
+    const res = await fetch(`${baseUrl}/api/users?role=TECHNICIAN`, {
         headers: {
             Cookie: `${token?.name}=${token?.value}`
         }

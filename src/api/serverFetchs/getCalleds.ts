@@ -1,16 +1,17 @@
 import { getToken } from "../utils/getToken"
 
-export async function getCalledsServer(){
+export async function getCalledsServer() {
 
     const token = await getToken()
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/calleds`, {
+    const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL
+    const res = await fetch(`${baseUrl}/api/calleds`, {
         next: {
             revalidate: 60
         },
         headers: {
             Cookie: `${token?.name}=${token?.value}`
-        }  
+        }
     })
 
     const body = await res.json()

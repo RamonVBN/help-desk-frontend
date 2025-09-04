@@ -1,10 +1,11 @@
 import { getToken } from "../utils/getToken"
 
-export async function getClientsServer(){
+export async function getClientsServer() {
 
     const token = await getToken()
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users?role=CLIENT`, {
+    const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL
+    const res = await fetch(`${baseUrl}/api/users?role=CLIENT`, {
         headers: {
             Cookie: `${token?.name}=${token?.value}`
         }
