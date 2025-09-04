@@ -39,6 +39,11 @@ npm run dev
 # ou
 yarn dev
 ```
+```bash
+# Variáveis de ambiente
+NEXT_PUBLIC_API_BASE_URL="..."
+
+```
 ## 🚀 Build e produção
 ```bash
 # Gerar build
