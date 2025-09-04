@@ -1,34 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 HelpDesk Frontend
 
-## Getting Started
+Aplicação Next.js para gerenciamento de chamados de suporte de T.I, usa interfaces responsivas, acessíveis e com uma ótima experiência de usuário.
 
-First, run the development server:
+## 🛠️ Tecnologias
+- [Next.js](https://nextjs.org/)
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Hook Form](https://react-hook-form.com)
+- [Axios](https://axios-http.com/ptbr/docs/intro)
+- [Tanstack Query](https://tanstack.com/query/latest)
+- [Radix UI](https://www.radix-ui.com)
+- [Shadcnui](https://ui.shadcn.com)
+- [Zod](https://zod.dev)
+- [date-fns](https://date-fns.org)
 
+
+## 📦 Pré-requisitos
+Antes de começar, você precisa ter instalado:
+- [Node.js](https://nodejs.org/) (>= 18)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+
+## ⚙️ Instalação e execução
 ```bash
+# Clonar o repositório
+git clone https://github.com/ramonvbn/help-desk-frontend.git
+
+# Entrar na pasta
+cd help-desk-frontend
+
+# Instalar dependências
+npm install
+# ou
+yarn install
+
+# Rodar em desenvolvimento
 npm run dev
-# or
+# ou
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+```bash
+# Variáveis de ambiente
+NEXT_PUBLIC_API_BASE_URL="..."
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+## 🚀 Build e produção
+```bash
+# Gerar build
+npm run build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Rodar em produção
+npm run start
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
