@@ -4,7 +4,7 @@ export async function getCalledsServer(){
 
     const token = await getToken()
 
-    const res = await fetch(`https://help-desk-frontend-seven.vercel.app/api/calleds`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/calleds`, {
         next: {
             revalidate: 60
         },

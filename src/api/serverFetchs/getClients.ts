@@ -4,7 +4,7 @@ export async function getClientsServer(){
 
     const token = await getToken()
 
-    const res = await fetch(`https://help-desk-frontend-seven.vercel.app/api/users?role=CLIENT`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users?role=CLIENT`, {
         headers: {
             Cookie: `${token?.name}=${token?.value}`
         }
