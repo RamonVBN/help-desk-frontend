@@ -38,3 +38,13 @@ yarn install
 npm run dev
 # ou
 yarn dev
+```
+## 🚀 Build e produção
+```bash
+# Gerar build
+npm run build
+
+# Rodar em produção
+npm run start
+
+
