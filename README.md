@@ -1,6 +1,6 @@
-# 🚀 Nome do Projeto
+# 🚀 HelpDesk Frontend
 
-Descrição curta do projeto: o que ele faz, objetivo principal e tecnologias usadas.
+Aplicação Next.js para gerenciamento de chamados de suporte de T.I, usa interfaces responsivas, acessíveis e com uma ótima experiência de usuário.
 
 ## 🛠️ Tecnologias
 - [Next.js](https://nextjs.org/)
