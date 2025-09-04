@@ -31,33 +31,22 @@ async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>
 
   let body: any = undefined;
   if (req.method !== "GET" && req.method !== "HEAD") {
-    body = await req.text();
+    body = await req.arrayBuffer()
   }
+
+  const headers = new Headers(req.headers)
+  headers.delete("host")
 
   const backendRes = await fetch(targetUrl, {
     method: req.method,
-    headers: {
-      // Encaminha os headers originais, exceto o host
-      ...Object.fromEntries(req.headers),
-      host: undefined as any,
-    },
+    headers,
     body,
-    redirect: "manual",
   });
 
-  // Copia a resposta
-  const response = new NextResponse(backendRes.body, {
+  const resHeaders = new Headers(backendRes.headers);
+
+  return new Response(await backendRes.text(), {
     status: backendRes.status,
-    headers: backendRes.headers,
+    headers: resHeaders,
   });
-
-  // Simple cookie passthrough
-  const setCookieHeaders = backendRes.headers.getSetCookie();
-  if (setCookieHeaders && setCookieHeaders.length > 0) {
-    setCookieHeaders.forEach((cookieHeader) => {
-      response.headers.append('set-cookie', cookieHeader);
-    });
-  }
-
-  return response;
 }
