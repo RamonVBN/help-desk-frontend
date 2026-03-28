@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: generateMetadataProps): Promi
 
   const token = await getToken()
 
-   // Pega dados da API
+  // Pega dados da API
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/calleds/${id}`, {
     headers: {

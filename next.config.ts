@@ -12,10 +12,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // TODO: is it really necessary?
-  experimental: {
-    serverComponentsExternalPackages: ['jsonwebtoken'],
-  }
 };
 
 export default nextConfig;
