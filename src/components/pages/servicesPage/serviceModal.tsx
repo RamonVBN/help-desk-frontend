@@ -17,7 +17,7 @@ import { useEffect, useState } from "react"
 import { Input } from "@/components/input"
 import { ErrorMessage } from "@/components/errorMessage"
 import { Button } from "@/components/ui/button"
-import { Service } from "@/api/types"
+import { Called, Service } from "@/api/types"
 
 interface ServiceModalProps {
     serviceId?: string
@@ -70,12 +70,34 @@ export function ServiceModal({ serviceId, title, handleCloseModal }: ServiceModa
         },
     })
 
-    const { mutate: createAdditionalServices } = useMutation({
+    const { mutate: createAdditionalServices, } = useMutation({
         mutationFn: ({ name, price }: { name: string, price: string }) => api.post('/additional-services', {
             description: name,
             price,
             calledId: calledId
         }),
+        onMutate({name, price}) {
+
+            const previousCalled = queryClient.getQueryData<Called>(['calleds', calledId])
+
+            queryClient.setQueryData<Called>(['calleds', calledId], (oldData) => {
+                
+                if(!oldData) return oldData
+
+                const newAdditionalService = {
+                    id: Math.random().toString(36).substring(2, 9), // Gera um ID aleatório para a nova serviço
+                    description: name,
+                    price: Number(price)
+                }
+
+                return {
+                    ...oldData,
+                    additionalServices: [...oldData.additionalServices, newAdditionalService]
+                }
+            })
+
+            return { previousCalled }
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['calleds'] })
             handleCloseModal()
