@@ -25,6 +25,21 @@ export async function generateMetadata({ params }: generateMetadataProps): Promi
   const data = await res.json()
   const called: Called = data.called
 
+  if (!called) {
+    return {
+      title: "Chamado não encontrado",
+      description: "O chamado que você está procurando não existe ou foi removido.",
+      openGraph: {
+        title: "Chamado não encontrado | HelpDesk",
+        description: "O chamado que você está procurando não existe ou foi removido.",
+        url: `${siteUrl}/calleds/${id}`,
+      },
+      alternates: {
+        canonical: `${siteUrl}/calleds/${id}`,
+      },
+    }
+  }
+
   // Retorna um objeto do tipo Metadata
   return {
     title: called.title,
