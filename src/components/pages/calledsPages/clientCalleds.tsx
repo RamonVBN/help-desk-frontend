@@ -46,8 +46,7 @@ export function ClientCalleds({initialCalledsData}: ClientCalledsProps) {
     if (clientCalleds.length < 1) {
         
         return <div className="w-full flex items-center justify-center gap-2">
-            <span className="font-bold text-xl" >Você ainda não criou nenhum chamado</span>
-            <Frown size={24}/>
+            <span className="font-bold text-xl" >Nenhum chamado encontrado</span>
         </div>
     }
 
