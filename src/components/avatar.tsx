@@ -41,7 +41,7 @@ export function Avatar({ imageUrl, className, username }: AvatarProps) {
 
         return (
             <div  className={cn(["rounded-full overflow-hidden relative", className])}>
-                <Image fill src={imageUrl} alt="" className="w-full h-full object-cover object-center" />
+                <img src={imageUrl} alt="" className="w-full h-full object-cover object-center fill" />
             </div>
         )
     }
