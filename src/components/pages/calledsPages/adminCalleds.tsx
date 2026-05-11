@@ -20,6 +20,8 @@ import { getCalleds } from "@/api/clientFetchs/getCalleds"
 import { format } from 'date-fns'
 import { formatPrice } from "@/utils/formatPrice"
 import { Called } from "@/api/types"
+import { Button } from "@/components/ui/button"
+import { Eye } from "lucide-react"
 
 interface AdminCalledsProps {
     initialCalledsData: Called[]
@@ -116,7 +118,14 @@ export function AdminCalleds({ initialCalledsData }: AdminCalledsProps) {
 
                                         <TableCell>
                                             <Link href={`/calleds/${called.id}`}>
-                                                <EditButton />
+                                                {
+                                                    called.status === 'CLOSED' ? (
+                                                        <Button size={'sm'} variant={'secondary'}>
+                                                            <Eye className="text-gray-200" size={14} />
+                                                        </Button>
+
+                                                    ) : <EditButton />
+                                                }
                                             </Link>
                                         </TableCell>
                                     </TableRow>

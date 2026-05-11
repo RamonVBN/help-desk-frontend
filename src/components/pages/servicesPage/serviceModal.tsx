@@ -53,9 +53,38 @@ export function ServiceModal({ serviceId, title, handleCloseModal }: ServiceModa
             name,
             price
         }),
+        onMutate({name, price}) {
+
+            const previousServices = queryClient.getQueryData<Service[]>(['services'])
+
+            queryClient.setQueryData<Service[]>(['services'], (oldData) => {
+                if (!oldData) return oldData
+
+                const updatedServiceData = oldData.map((service) => {
+                    if (service.id === updatedService?.id) {
+                        return {
+                            ...service,
+                            name,
+                            price: Number(price)
+                        }
+                    }
+                    
+                    return service
+                    
+                })
+
+                return updatedServiceData
+            })
+
+            return { previousServices }
+            
+        },
+        onError(error, _, context) {
+            console.log(error)
+            queryClient.setQueryData<Service[]>(['services'], context?.previousServices)
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['services'] })
-            handleCloseModal()
         },
     })
 
@@ -64,9 +93,31 @@ export function ServiceModal({ serviceId, title, handleCloseModal }: ServiceModa
             name,
             price
         }),
+        onMutate({ name, price }) {
+            
+            const previousServices = queryClient.getQueryData<Service[]>(['services'])
+
+            const newService: Service = {
+                id: Math.random().toString(36).substring(2, 9), // Gera um ID aleatório para a nova serviço
+                name,
+                price: Number(price),
+                status: 'ACTIVE'
+            }
+
+            queryClient.setQueryData<Service[]>(['services'], (oldData) => {
+                if (!oldData) return oldData
+
+                return [newService, ...oldData]
+            })
+
+            return { previousServices }
+        },
+        onError(error, _, context) {
+            console.log(error)
+            queryClient.setQueryData<Service[]>(['services'], context?.previousServices)
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['services'] })
-            handleCloseModal()
         },
     })
 
@@ -100,7 +151,6 @@ export function ServiceModal({ serviceId, title, handleCloseModal }: ServiceModa
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['calleds'] })
-            handleCloseModal()
         },
         onError(error) {
             if (error instanceof AxiosError) {
@@ -127,6 +177,8 @@ export function ServiceModal({ serviceId, title, handleCloseModal }: ServiceModa
                 createServices({ name, price })
             }
         }
+
+        handleCloseModal()
     }
 
     function allowJustLetters(inputValue: string) {
@@ -146,8 +198,6 @@ export function ServiceModal({ serviceId, title, handleCloseModal }: ServiceModa
                 currency: "BRL"
             }))
         }
-
-
     }
 
     useEffect(() => {
