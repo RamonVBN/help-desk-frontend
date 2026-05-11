@@ -1,52 +1,79 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  return handleProxy(req, params);
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ path: string[] }> }
+) {
+  return handleProxy(req, context.params);
 }
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  return handleProxy(req, params);
+export async function POST(
+  req: NextRequest,
+  context: { params: Promise<{ path: string[] }> }
+) {
+  return handleProxy(req, context.params);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  return handleProxy(req, params);
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ path: string[] }> }
+) {
+  return handleProxy(req, context.params);
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  return handleProxy(req, params);
+export async function PATCH(
+  req: NextRequest,
+  context: { params: Promise<{ path: string[] }> }
+) {
+  return handleProxy(req, context.params);
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  return handleProxy(req, params);
+export async function DELETE(
+  req: NextRequest,
+  context: { params: Promise<{ path: string[] }> }
+) {
+  return handleProxy(req, context.params);
 }
 
-// Função central de proxy
+async function handleProxy(
+  req: NextRequest,
+  paramsPromise: Promise<{ path: string[] }>
+) {
+  const { path } = await paramsPromise;
 
-async function handleProxy(req: NextRequest, params: Promise<{ path: string[] }>) {
-  const { path: rootPath } = await params
-  const path = rootPath.join("/");
-  const targetUrl = `${BACKEND_URL}/${path.replace(/^api\//, "")}${req.nextUrl.search}`;
+  const targetUrl =
+    `${BACKEND_URL}/${path.join("/")}` +
+    req.nextUrl.search;
 
-  let body: any = undefined;
-  if (req.method !== "GET" && req.method !== "HEAD") {
-    body = await req.arrayBuffer()
-  }
+  const body =
+    req.method === "GET" || req.method === "HEAD"
+      ? undefined
+      : await req.arrayBuffer();
 
-  const headers = new Headers(req.headers)
-  headers.delete("host")
+  const headers = new Headers(req.headers);
+
+  headers.delete("host");
 
   const backendRes = await fetch(targetUrl, {
     method: req.method,
     headers,
     body,
+    redirect: "manual",
   });
 
-  const resHeaders = new Headers(backendRes.headers);
-
-  return new Response(await backendRes.text(), {
+  const response = new Response(await backendRes.arrayBuffer(), {
     status: backendRes.status,
-    headers: resHeaders,
   });
+
+  backendRes.headers.forEach((value, key) => {
+    if (key.toLowerCase() === "set-cookie") {
+      response.headers.append("set-cookie", value);
+    } else {
+      response.headers.set(key, value);
+    }
+  });
+
+  return response;
 }
