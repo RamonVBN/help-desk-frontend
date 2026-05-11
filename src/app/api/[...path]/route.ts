@@ -46,14 +46,15 @@ async function handleProxy(
   const targetUrl =
     `${BACKEND_URL}/${path.join("/")}${req.nextUrl.search}`;
 
+  // IMPORTANTE:
+  // arrayBuffer suporta JSON + multipart + arquivos
   const body =
     req.method === "GET" || req.method === "HEAD"
       ? undefined
-      : await req.text();
+      : await req.arrayBuffer();
 
   const headers = new Headers(req.headers);
 
-  // Remove headers problemáticos
   headers.delete("host");
   headers.delete("content-length");
 
@@ -69,7 +70,7 @@ async function handleProxy(
   backendRes.headers.forEach((value, key) => {
     const lowerKey = key.toLowerCase();
 
-    // Não repassar headers que podem quebrar a resposta
+    // Não repassar headers problemáticos
     if (
       lowerKey === "content-length" ||
       lowerKey === "content-encoding" ||
@@ -88,10 +89,8 @@ async function handleProxy(
     responseHeaders.set(key, value);
   });
 
-  // Consome completamente a resposta
-  const data = await backendRes.text();
-
-  return new NextResponse(data, {
+  // Repassa o stream original da resposta
+  return new NextResponse(backendRes.body, {
     status: backendRes.status,
     headers: responseHeaders,
   });
