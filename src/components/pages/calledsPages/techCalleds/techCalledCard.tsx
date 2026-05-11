@@ -1,6 +1,6 @@
 'use client'
 
-import { CircleCheckBig, Clock2 } from "lucide-react";
+import { CircleCheckBig, Clock2, Eye } from "lucide-react";
 import { EditButton } from "../../../editButton";
 import { Button } from "../../../ui/button";
 
@@ -42,7 +42,14 @@ export function TechCalledCard({ called }: TechCalledCardProps) {
 
                     <div className="flex gap-2">
                         <Link href={`/calleds/${called.id}`}>
-                            <EditButton />
+                            {
+                                called.status === 'CLOSED' ? (
+                                    <Button size={'sm'} variant={'secondary'}>
+                                        <Eye className="text-gray-200" size={14} />
+                                    </Button>
+
+                                ) : <EditButton />
+                            }
                         </Link>
 
                         {
