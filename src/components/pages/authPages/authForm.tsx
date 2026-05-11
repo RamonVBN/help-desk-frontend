@@ -32,7 +32,7 @@ export function AuthForm() {
     })
 
     const { mutate: createSession, isPending: isCreatingSession } = useMutation({
-        mutationFn: ({ email, password }: AuthForm) => axios.post('/api/sessions', {
+        mutationFn: ({ email, password }: AuthForm) => api.post('/sessions', {
             email,
             password
         }),
