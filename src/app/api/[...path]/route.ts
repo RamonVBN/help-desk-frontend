@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -44,17 +44,18 @@ async function handleProxy(
   const { path } = await paramsPromise;
 
   const targetUrl =
-    `${BACKEND_URL}/${path.join("/")}` +
-    req.nextUrl.search;
+    `${BACKEND_URL}/${path.join("/")}${req.nextUrl.search}`;
 
   const body =
     req.method === "GET" || req.method === "HEAD"
       ? undefined
-      : await req.arrayBuffer();
+      : await req.text();
 
   const headers = new Headers(req.headers);
 
+  // Remove headers problemáticos
   headers.delete("host");
+  headers.delete("content-length");
 
   const backendRes = await fetch(targetUrl, {
     method: req.method,
@@ -63,17 +64,35 @@ async function handleProxy(
     redirect: "manual",
   });
 
-  const response = new Response(await backendRes.arrayBuffer(), {
-    status: backendRes.status,
-  });
+  const responseHeaders = new Headers();
 
   backendRes.headers.forEach((value, key) => {
-    if (key.toLowerCase() === "set-cookie") {
-      response.headers.append("set-cookie", value);
-    } else {
-      response.headers.set(key, value);
+    const lowerKey = key.toLowerCase();
+
+    // Não repassar headers que podem quebrar a resposta
+    if (
+      lowerKey === "content-length" ||
+      lowerKey === "content-encoding" ||
+      lowerKey === "transfer-encoding" ||
+      lowerKey === "connection"
+    ) {
+      return;
     }
+
+    // Preserva cookies
+    if (lowerKey === "set-cookie") {
+      responseHeaders.append("set-cookie", value);
+      return;
+    }
+
+    responseHeaders.set(key, value);
   });
 
-  return response;
+  // Consome completamente a resposta
+  const data = await backendRes.text();
+
+  return new NextResponse(data, {
+    status: backendRes.status,
+    headers: responseHeaders,
+  });
 }

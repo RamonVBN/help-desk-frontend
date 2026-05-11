@@ -1,88 +1,110 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken"
 
-const publicRoutes = ['/sign-in', '/sign-up']
+const publicRoutes = ["/sign-in", "/sign-up"];
 
 const roleRoutes: Record<string, RegExp[]> = {
   ADMIN: [
-    /^\/calleds$/,                     // /calleds
-    /^\/calleds\/(?!new$)[\w-]+$/,     // /calleds/:id (UUID, mas não "new")
-    /^\/technicians$/,                 // /technicians
-    /^\/technicians\/(?!new$)[\w-]+$/, // /technicians/:id
-    /^\/technicians\/new$/,            // /technicians/new
-    /^\/clients$/,                     // /clients
-    /^\/services$/                     // /services
+    /^\/calleds$/,
+    /^\/calleds\/(?!new$)[\w-]+$/,
+    /^\/technicians$/,
+    /^\/technicians\/(?!new$)[\w-]+$/,
+    /^\/technicians\/new$/,
+    /^\/clients$/,
+    /^\/services$/,
   ],
+
   TECHNICIAN: [
-    /^\/calleds$/,                     // /calleds
-    /^\/calleds\/(?!new$)[\w-]+$/      // /calleds/:id (UUID, mas não "new")
+    /^\/calleds$/,
+    /^\/calleds\/(?!new$)[\w-]+$/,
   ],
+
   CLIENT: [
-    /^\/calleds$/,                     // /calleds
-    /^\/calleds\/new$/,                // /calleds/new
-    /^\/calleds\/[\w-]+$/              // /calleds/:id (UUID, incluindo letras e números)
-  ]
+    /^\/calleds$/,
+    /^\/calleds\/new$/,
+    /^\/calleds\/[\w-]+$/,
+  ],
+};
+
+const DEFAULT_AUTHENTICATED_ROUTE = "/calleds";
+const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = "/sign-in";
+
+function parseJwt(token: string) {
+  try {
+    const base64Payload = token.split(".")[1];
+
+    const payload = atob(base64Payload);
+
+    return JSON.parse(payload);
+  } catch {
+    return null;
+  }
 }
 
-const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/sign-in'
-
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
-  const token = req.cookies.get("access_token")?.value
+  const { pathname } = req.nextUrl;
 
+  const token = req.cookies.get("access_token")?.value;
+
+  // Home
   if (pathname === "/") {
-    if (token) {
-      // Usuário autenticado → redireciona para a primeira página "padrão"
-      return NextResponse.redirect(new URL("/calleds", req.url))
-    } else {
-      // Não autenticado → redireciona para login
-      return NextResponse.redirect(new URL(REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE, req.url))
-    }
+    return NextResponse.redirect(
+      new URL(
+        token
+          ? DEFAULT_AUTHENTICATED_ROUTE
+          : REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE,
+        req.url
+      )
+    );
   }
 
-  // Caso não autenticado e tentando acessar rota privada
-  if (!token && !publicRoutes.includes(req.nextUrl.pathname)) {
-    const redirectUrl = req.nextUrl.clone()
-    redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE
-    return NextResponse.redirect(redirectUrl)
+  // Não autenticado em rota privada
+  if (!token && !publicRoutes.includes(pathname)) {
+    return NextResponse.redirect(
+      new URL(REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE, req.url)
+    );
+  }
+
+  // Autenticado tentando acessar login/signup
+  if (token && publicRoutes.includes(pathname)) {
+    return NextResponse.redirect(
+      new URL(DEFAULT_AUTHENTICATED_ROUTE, req.url)
+    );
   }
 
   if (token) {
-    try {
-      const decoded = jwt.decode(token) as { role?: string }
-      const role = decoded?.role
+    const decoded = parseJwt(token);
 
-      // Bloqueia usuários logados de acessar rotas públicas
-      if (publicRoutes.includes(req.nextUrl.pathname)) {
-        const redirectUrl = req.nextUrl.clone()
-        redirectUrl.pathname = "/"
-        return NextResponse.redirect(redirectUrl)
-      }
+    const role = decoded?.role;
 
-      // Verifica permissões da role
-      if (role && roleRoutes[role]) {
-        const isAllowed = roleRoutes[role].some((pattern) =>
-          pattern.test(req.nextUrl.pathname)
-        )
+    if (!role || !roleRoutes[role]) {
+      return NextResponse.redirect(
+        new URL(DEFAULT_AUTHENTICATED_ROUTE, req.url)
+      );
+    }
 
-        if (!isAllowed) {
-          const redirectUrl = req.nextUrl.clone()
-          redirectUrl.pathname = "/calleds"
-          return NextResponse.redirect(redirectUrl)
-        }
-      }
-    } catch (err) {
-      console.error("Erro ao decodificar token:", err)
-      const redirectUrl = req.nextUrl.clone()
-      redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE
-      return NextResponse.redirect(redirectUrl)
+    const isAllowed = roleRoutes[role].some((pattern) =>
+      pattern.test(pathname)
+    );
+
+    if (!isAllowed) {
+      return NextResponse.redirect(
+        new URL(DEFAULT_AUTHENTICATED_ROUTE, req.url)
+      );
     }
   }
 
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|favicon.ico|.*\\.(?:png|jpg|jpeg|svg|gif|webp|ico|css|js|woff2?|ttf)).*)'],
-}
+  matcher: [
+    "/",
+    "/sign-in",
+    "/sign-up",
+    "/calleds/:path*",
+    "/technicians/:path*",
+    "/clients/:path*",
+    "/services/:path*",
+  ],
+};
