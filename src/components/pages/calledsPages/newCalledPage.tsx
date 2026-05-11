@@ -50,7 +50,7 @@ export function NewCalledPage() {
 
     const selectedService = services?.find((service) => service.id === watch('serviceId'))
 
-    const { mutate: createCalleds } = useMutation({
+    const { mutate: createCalleds, isPending: isCreatingCalled } = useMutation({
         mutationFn: ({ title, description, serviceId }: NewCalledPageForm) => api.post('/calleds', {
             title,
             description,
@@ -216,7 +216,7 @@ export function NewCalledPage() {
                                     </div>
                                 </div>
                                 <Card.Description description='O chamado será automaticamente atribuído a um técnico disponível' />
-                                <Button form='createCalledForm' type='submit' className='rounded-[5px]'>
+                                <Button disabled={isCreatingCalled} form='createCalledForm' type='submit' className='rounded-[5px]'>
                                     Criar chamado
                                 </Button>
                             </div>
