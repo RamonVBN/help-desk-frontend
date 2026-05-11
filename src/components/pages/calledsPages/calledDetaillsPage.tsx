@@ -41,7 +41,7 @@ export function CalledDetailsPage() {
     queryFn: getUser,
   })
 
-  const { data: called, isPending: isLoadingCalled } = useQuery<Called>({
+  const { data: called, isPending: isLoadingCalled, isFetching: isFetchingCalled } = useQuery<Called>({
     queryKey: ["calleds", calledId],
     queryFn: async () => {
       const res = await api.get(`/calleds/${calledId}`)
@@ -52,14 +52,34 @@ export function CalledDetailsPage() {
     },
   })
 
-  const { mutate: updateCalledStatus } = useMutation({
+  const { mutate: updateCalledStatus, isPending: isUpdatingCalledStatus } = useMutation({
     mutationFn: (status: "PROGRESS" | "CLOSED") =>
       api.patch(`/calleds/${called?.id}`, {
         status,
       }),
+      onMutate() {
+        
+        const previousCalled = queryClient.getQueryData<Called>(['calleds', calledId])
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["calleds"] })
+        return { previousCalled }
+      },
+      onError(error, _, context) {
+        console.log(error)
+        queryClient.setQueryData<Called>(['calleds', calledId], context?.previousCalled)
+      },
+
+    onSuccess: (_, status) => {
+      queryClient.setQueryData<Called>(['calleds', calledId], (oldData) => {
+          if(!oldData) return oldData
+
+          return {
+            ...oldData,
+            status
+          }
+        })
+
+      queryClient.invalidateQueries({ queryKey: ["calleds", calledId] })
+      
     },
   })
 
@@ -67,7 +87,7 @@ export function CalledDetailsPage() {
     mutationFn: (addServiceId: string) =>
       api.delete(`/additional-services/${addServiceId}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["calleds"] })
+      queryClient.invalidateQueries({ queryKey: ["calleds", calledId] })
     },
   })
 
@@ -97,9 +117,9 @@ export function CalledDetailsPage() {
       <div className="lg:w-[50rem]">
         <Link
           href={"/calleds"}
-          className="flex gap-2 items-center font-bold text-xs leading-[140%] text-gray-300"
+          className=" max-w-min flex gap-2 items-center font-bold text-xs leading-[140%] text-gray-300"
         >
-          <Button variant={"ghost"} className="p-2 mr-auto hover:bg-gray-500">
+          <Button disabled={isUpdatingCalledStatus} variant={"ghost"} className="p-2 mr-auto hover:bg-gray-500">
             <ArrowLeft size={14} />
             Voltar
           </Button>
@@ -115,6 +135,7 @@ export function CalledDetailsPage() {
                 <div className="flex gap-2 w-full lg:max-w-[20.875rem] ">
                   {called.status === "OPEN" && (
                     <Button
+                      disabled={isUpdatingCalledStatus}
                       onClick={() => updateCalledStatus("PROGRESS")}
                       variant={"secondary"}
                       className={`rounded-[5px] flex-[1_1_20.875rem]  ${user?.role === "ADMIN" ? "order-1" : "order-2 bg-gray-200 text-gray-500 hover:bg-gray-200/95"}`}
@@ -131,6 +152,7 @@ export function CalledDetailsPage() {
                       onClick={() => updateCalledStatus("CLOSED")}
                       variant={"secondary"}
                       className={`rounded-[5px] flex-[1_1_20.875rem] ${user?.role === "TECHNICIAN" && "lg:flex-[1_1_11.1875rem]"}`}
+                      disabled={isUpdatingCalledStatus}
                     >
                       <CircleCheckBig size={18} />
                       {user?.role === "ADMIN" && "Encerrado"}
@@ -312,7 +334,7 @@ export function CalledDetailsPage() {
                       >
                         <DialogTrigger asChild>
                           {called.status !== "CLOSED" && (
-                            <Button size={"sm"}>
+                            <Button size={"sm"} disabled={isUpdatingCalledStatus}>
                               <Plus
                                 strokeWidth={3}
                                 className="rounded-[5px]"
@@ -345,6 +367,7 @@ export function CalledDetailsPage() {
 
                                 {called.status !== "CLOSED" && (
                                   <Button
+                                    disabled={isFetchingCalled}
                                     onClick={() =>
                                       deleteAdditionalServices(addService.id)
                                     }
