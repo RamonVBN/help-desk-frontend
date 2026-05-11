@@ -50,10 +50,25 @@ export function ClientsTablePage({initialClientsData}: ClientsTablePageProps) {
 
     const { mutate: deleteClientAccount } = useMutation({
         mutationFn: (clientId: string) => api.delete(`/users/${clientId}`),
-        onSuccess: () => {
+        onMutate(clientId) {
+            
+            const previousClients = queryClient.getQueryData<Client[]>(['clients'])
 
+            queryClient.setQueryData<Client[]>(['clients'], (oldClients) => {
+                if (!oldClients) return oldClients
+                return oldClients.filter(client => client.id !== clientId)
+            })
+
+            return { previousClients }
+        },
+        onError(error, _, context) {
+            console.log(error)
+            queryClient.setQueryData(['clients'], context?.previousClients)
+        },
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['clients'] })
         }
+        
     })
 
     function handleCloseClientTableModal(){

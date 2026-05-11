@@ -55,15 +55,56 @@ export function ClientProfileModal({ clientId, handleCloseModal }: ClientProfile
             name,
             email
         }),
+        onMutate({name, email}) {
+            
+            const previousClientData = queryClient.getQueryData<User>(['clients', clientId])
+
+            const previousClientsList = queryClient.getQueryData<User[]>(['clients'])
+
+            queryClient.setQueryData(['clients', clientId], (oldClientData: User | undefined) => {
+                if (!oldClientData) return oldClientData
+
+                return {
+                    ...oldClientData,
+                    name,   
+                    email
+                }
+            })
+
+            queryClient.setQueryData(['clients'], (oldClientsList: User[] | undefined) => {
+                if (!oldClientsList) return oldClientsList
+
+                return oldClientsList.map(client => {
+                    if (client.id === clientId) {
+                        return {
+                            ...client,
+                            name,
+                            email
+                        }
+                    }
+
+                    return client
+                })
+            })
+
+            return { previousClientData, previousClientsList }
+        },
+        onError(error, _, context) {
+            console.log(error)
+            queryClient.setQueryData(['clients', clientId], context?.previousClientData)
+            queryClient.setQueryData(['clients'], context?.previousClientsList)
+        },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['clients'] })
-            handleCloseModal()
+            queryClient.invalidateQueries({ queryKey: ['clients', clientId] })
+            queryClient.invalidateQueries({ queryKey: ['clients']})
         }
     })
 
     function onSubmit(data: ClientProfileForm) {
         const { name, email } = data
         updateClientAccount({ name, email })
+        handleCloseModal()
+
     }
 
     function allowJustLetters(valorInput: string) {
