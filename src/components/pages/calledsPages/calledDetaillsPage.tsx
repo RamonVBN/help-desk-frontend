@@ -78,7 +78,24 @@ export function CalledDetailsPage() {
           }
         })
 
+      queryClient.setQueryData<Called[]>(['calleds'], (oldData) => {
+        if(!oldData) return oldData
+
+        return oldData.map(called => {
+          if(called.id === calledId) {
+            return {
+              ...called,
+              status
+            }
+          }
+
+          return called
+        })
+      })
+
       queryClient.invalidateQueries({ queryKey: ["calleds", calledId] })
+      queryClient.invalidateQueries({ queryKey: ["calleds"]})
+
       
     },
   })

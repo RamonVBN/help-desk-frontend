@@ -61,8 +61,10 @@ export function AdminCalleds({ initialCalledsData }: AdminCalledsProps) {
                                 return (
                                     <TableRow key={called.id}>
                                         <TableCell className="whitespace-normal">
-                                            <span className="text-xs leading-[140%] text-gray-200 font-bold">{format
-                                                (called.updatedAt, "dd/MM/yyyy HH:mm")}</span>
+                                            <span className="text-xs leading-[140%] text-gray-200 font-bold">
+                                                {/* {format(called.updatedAt, "dd/MM/yyyy HH:mm")} */}
+                                                teste
+                                            </span>
                                         </TableCell>
 
                                         <TableCell className="hidden lg:table-cell max-w-[6.25rem] truncate 2xl:max-w-full">
