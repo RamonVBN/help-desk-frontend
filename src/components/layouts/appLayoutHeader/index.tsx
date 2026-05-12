@@ -167,8 +167,8 @@ export function AppLayoutHeader() {
                 modal>
                 <DropdownMenuTrigger asChild>
                     <div className={`flex gap-3 p-4 items-center  transition-colors ${user ? 'lg:hover:bg-gray-200 cursor-pointer' : 'pointer-events-none cursor-not-allowed'}`}>
-                        <Avatar username={user?.name} imageUrl={user?.imageUrl} className="w-10 h-10 text-[14px]" />
-                        <div className="lg:flex lg:flex-col hidden ">
+                        <Avatar username={user?.name} imageUrl={user?.imageUrl} className="min-w-10 h-10 text-[14px]" />
+                        <div className="w-full max-w-[8rem] xl:max-w-[11.125rem] lg:flex lg:flex-col hidden ">
                             {
                                 user ? (
                                     <>
@@ -176,9 +176,9 @@ export function AppLayoutHeader() {
                                         <span className="text-xs leading-[140%] text-gray-400 truncate max-w-[9.375rem]">{user.email}</span>
                                     </>
                                 ) :
-                                    <div className="flex flex-col gap-1">
-                                        <span className=" bg-gray-200 animate-pulse h-[15px] w-[9.375rem] rounded-[6px]" />
-                                        <span className="bg-gray-200 animate-pulse h-[10px] w-[9.375rem] rounded-[6px]" />
+                                    <div className="w-full flex flex-col gap-1 items-stretch">
+                                        <div className=" bg-gray-200 animate-pulse h-[15px] rounded-[6px]" />
+                                        <div className="bg-gray-200 animate-pulse h-[10px]  rounded-[6px]" />
                                     </div>
                             }
                         </div>
