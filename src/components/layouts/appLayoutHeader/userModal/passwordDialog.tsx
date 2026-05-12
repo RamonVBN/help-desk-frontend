@@ -41,7 +41,7 @@ export function PasswordDialog({ closeUserDialog }: PasswordDialogProps) {
         queryFn: getUser
     })
 
-    const { mutate: updatePassword } = useMutation({
+    const { mutate: updatePassword, isPending: isUpdatingPassword } = useMutation({
         mutationFn: ({ currentPassword, newPassword }: { currentPassword: string, newPassword: string }) => api.put(`/users/${user?.id}`, {
             currentPassword,
             newPassword
@@ -114,7 +114,9 @@ export function PasswordDialog({ closeUserDialog }: PasswordDialogProps) {
             <Separator />
 
             <div className="py-6 px-7 flex flex-col">
-                <Button type="submit" className="rounded-[5px]">Salvar</Button>
+                <Button disabled={isUpdatingPassword} type="submit" className="rounded-[5px]">
+                    {isUpdatingPassword ? 'Salvando...' : 'Salvar'}
+                </Button>
             </div>
         </form>
     )

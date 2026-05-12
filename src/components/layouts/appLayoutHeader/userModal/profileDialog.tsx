@@ -1,5 +1,5 @@
 import { Button } from "../../../ui/button";
-import { Trash, Upload } from "lucide-react";
+import { Divide, Trash, Upload } from "lucide-react";
 import { Input } from "../../../input";
 import { AvailableHourTag } from "../../../availableHourTag";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -46,7 +46,7 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
         resolver: zodResolver(profileFormSchema)
     })
 
-    const { mutate: uploadProfileImage } = useMutation({
+    const { mutate: uploadProfileImage, isPending: isUpdatingProfileImage } = useMutation({
         mutationFn: (file: File) => {
 
             const fileUploadForm = new FormData()
@@ -59,24 +59,42 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
         }
     })
 
-    const { mutate: deleteProfileImage } = useMutation({
+    const { mutate: deleteProfileImage, isPending: isDeletingProfileImage } = useMutation({
         mutationFn: () => api.delete('/uploads'),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['user'] })
         }
     })
 
-    const { mutate: updateProfile } = useMutation({
+    const { mutate: updateProfile, isPending: isUpdatingProfileData } = useMutation({
         mutationFn: ({ name, email }: { name: string, email: string }) => api.put(`/users/${user?.id}`, {
             name,
             email
         }),
+        onMutate({ name, email }) {
+            
+            const previousUser = queryClient.getQueryData<User>(['user'])
+
+            queryClient.setQueryData<User>(['user'], (oldUser) => {
+                if (!oldUser) return oldUser
+
+                return {
+                    ...oldUser,
+                    name,
+                    email
+                }
+            })
+
+            return { previousUser }
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['user'] })
             closeUserDialog()
         },
-        onError: (error) => {
-
+        onError: (error, _, context) => {
+            
+            queryClient.setQueryData(['user'], context?.previousUser)
+            
             if (error instanceof AxiosError) {
 
                 const message = error.response?.data.message
@@ -94,12 +112,19 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
         updateProfile({ name, email })
     }
 
+    function handleUpdateProfileImage(event: React.ChangeEvent<HTMLInputElement>) {
+        event.target.files && setFile(event.target.files[0])
+
+        event.target.value = ''
+    }
+
+    const isUpdatingProfile = isUpdatingProfileData || isUpdatingProfileImage || isDeletingProfileImage 
+
     useEffect(() => {
         if (file) {
             uploadProfileImage(file)
         }
 
-        setFile(null)
     }, [file])
 
     if (!user) {
@@ -119,20 +144,32 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
 
                     <div className="flex gap-1">
 
-                        <Button asChild variant={'secondary'} className="text-gray-200">
-                            <label htmlFor="uploadProfileImage">
-                                <Upload strokeWidth={3} className="size-3.5 text-gray-200" />
-                                Nova imagem
-                            </label>
+                        <Button asChild={!isUpdatingProfile} type="button" disabled={isUpdatingProfile} variant={'secondary'} className="text-gray-200 px-3">
+
+                            {
+                                isUpdatingProfile ? 
+                                <div className="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all  disabled:cursor-progress">
+                                    <Upload strokeWidth={3} className="size-3.5 text-gray-200" />
+                                    Nova imagem
+                                </div> 
+
+                                : 
+
+                                <label htmlFor="uploadProfileImage">
+                                    <Upload strokeWidth={3} className="size-3.5 text-gray-200" />
+                                    Nova imagem
+                                </label>
+                            }
+                           
                         </Button>
 
                         <input
-                            onChange={(e) => e.target.files && setFile(e.target.files[0])}
+                            onChange={handleUpdateProfileImage}
                             id="uploadProfileImage"
                             className="sr-only"
                             type="file" />
 
-                        <Button type="button" onClick={() => deleteProfileImage()} variant={'secondary'}>
+                        <Button disabled={isUpdatingProfile} type="button" onClick={() => deleteProfileImage()} variant={'secondary'}>
                             <Trash strokeWidth={3} className="size-3.5 text-red-300" />
                         </Button>
                     </div>
@@ -140,7 +177,7 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
 
                 <div className="flex flex-col gap-4 ">
                     <div>
-                        <Input error={errors.root || errors.name ? true : false} {...register('name')} label="nome" placeholder="Seu nome" />
+                        <Input disabled={isUpdatingProfile} error={errors.root || errors.name ? true : false} {...register('name')} label="nome" placeholder="Seu nome" />
                         {
                             errors.name && (
                                 <ErrorMessage>
@@ -151,7 +188,7 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
                     </div>
 
                     <div>
-                        <Input error={errors.root || errors.email ? true : false} {...register('email')} label="e-mail" placeholder="exemplo@email.com" />
+                        <Input disabled={isUpdatingProfile} error={errors.root || errors.email ? true : false} {...register('email')} label="e-mail" placeholder="exemplo@email.com" />
                         {
                             errors.email && (
                                 <ErrorMessage>
@@ -165,6 +202,7 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
                         <Input error={errors.root ? true : false} defaultValue={'**********'} disabled label="senha" type="password" className="w-[70%]" />
 
                         <Button
+                            disabled={isUpdatingProfile}
                             type="button"
                             className="absolute top-[10%] left-[80%] md:left-[88%] font-bold text-xs leading-[140%] text-gray-200 rounded-[5px] px-2"
                             variant={'secondary'}
@@ -209,7 +247,9 @@ export function ProfileDialog({ changeNewPasswordModal, closeUserDialog }: Profi
             <Separator />
 
             <div className="py-6 px-7 flex flex-col">
-                <Button type="submit" className="rounded-[5px]">Salvar</Button>
+                <Button disabled={isUpdatingProfile} type="submit" className="rounded-[5px]">
+                    {isUpdatingProfile ? 'Salvando...' : 'Salvar'}
+                </Button>
             </div>
         </form>
     )
