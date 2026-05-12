@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Clock2 } from "lucide-react"
 import Link from "next/link"
 
 import * as Card from "@/components/card"
@@ -157,6 +157,9 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
   function onSubmit(
     data: TechnicianUpdateProfileForm | TechnicianCreateProfileForm,
   ) {
+
+    console.log(data.availableHours)
+
     if (techId) {
       const { name, email, availableHours } = data
       updateTechProfile({ name, email, availableHours })
@@ -191,6 +194,15 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
       })
     }
   }, [technician])
+
+  if (!technician && techId) {
+     return (
+      <div className="w-full flex items-center justify-center text-xl font-bold gap-2">
+        <span>Carregando perfil de técnico</span>
+        <Clock2 size={18} className="animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <div className="w-full flex flex-col lg:items-center">
