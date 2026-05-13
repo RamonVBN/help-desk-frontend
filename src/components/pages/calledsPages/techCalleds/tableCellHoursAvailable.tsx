@@ -23,7 +23,7 @@ export function TableCellHoursAvailable({hoursList, limit, className}: TableHour
                 } else if(hoursList.length === i + 1) {
                     
                     return(
-                        <AvailableHourTag key={i}>+{hoursList.length - limit}</AvailableHourTag>
+                        <AvailableHourTag key={i}> +{hoursList.length - limit}</AvailableHourTag>
                     )
                 
                 }   

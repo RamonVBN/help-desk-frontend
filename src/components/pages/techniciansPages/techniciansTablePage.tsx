@@ -75,7 +75,6 @@ export function TechniciansTablePage({initialTechniciansData}: TechniciansTableP
                                         </TableCell>
 
                                         <TableCell className="max-w-10">
-
                                             <TableCellHoursAvailable className="md:hidden" limit={1} hoursList={technician.technician.availableHours} />
                                             <TableCellHoursAvailable className="hidden md:flex xl:hidden" limit={2} hoursList={technician.technician.availableHours} />
                                             <TableCellHoursAvailable className="hidden xl:flex" limit={4} hoursList={technician.technician.availableHours} />

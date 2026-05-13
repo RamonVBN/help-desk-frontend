@@ -157,9 +157,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
   function onSubmit(
     data: TechnicianUpdateProfileForm | TechnicianCreateProfileForm,
   ) {
-
-    console.log(data.availableHours)
-
+    
     if (techId) {
       const { name, email, availableHours } = data
       updateTechProfile({ name, email, availableHours })
