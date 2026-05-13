@@ -22,6 +22,7 @@ import { formatPrice } from "@/utils/formatPrice"
 import { Called } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { Eye } from "lucide-react"
+import { FormattedDate } from "./components/formattedDate"
 
 interface AdminCalledsProps {
     initialCalledsData: Called[]
@@ -61,10 +62,7 @@ export function AdminCalleds({ initialCalledsData }: AdminCalledsProps) {
                                 return (
                                     <TableRow key={called.id}>
                                         <TableCell className="whitespace-normal">
-                                            <span className="text-xs leading-[140%] text-gray-200 font-bold">
-                                                {/* {format(called.updatedAt, "dd/MM/yyyy HH:mm")} */}
-                                                teste
-                                            </span>
+                                            <FormattedDate date={called.updatedAt} />
                                         </TableCell>
 
                                         <TableCell className="hidden lg:table-cell max-w-[6.25rem] truncate 2xl:max-w-full">
