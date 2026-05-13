@@ -20,6 +20,19 @@ A aplicação foi construída utilizando tecnologias modernas do ecossistema Rea
 
 ---
 
+## Deploy
+
+[https://help-desk-frontend-seven.vercel.app/](https://help-desk-frontend-seven.vercel.app/)
+
+---
+
+## Backend
+API REST da aplicação HelpDesk:
+
+https://github.com/ramonvbn/help-desk-backend
+
+---
+
 # 🚀 Tecnologias utilizadas
 
 ## Frontend
