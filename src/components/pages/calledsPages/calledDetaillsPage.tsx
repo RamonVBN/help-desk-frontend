@@ -195,7 +195,7 @@ export function CalledDetailsPage() {
 
                 <div>
                   <Card.Description description="Descrição" />
-                  <p className="text-[0.875rem] leading-[140%] text-gray-200">
+                  <p className="text-[0.875rem] leading-[140%] text-gray-200 whitespace-pre-wrap break-all">
                     {called?.description}
                   </p>
                 </div>

@@ -97,7 +97,7 @@ export function NewCalledPage() {
                                 </div>
                                 <form id='createCalledForm' onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
                                     <div>
-                                        <Input {...register('title')} onChange={(e) => allowJustLetters(e.currentTarget.value)} error={errors.root || errors.title ? true : false}  label='título' placeholder='Digite um título para o chamado' />
+                                        <Input maxLength={50} {...register('title')} onChange={(e) => allowJustLetters(e.currentTarget.value)} error={errors.root || errors.title ? true : false}  label='título' placeholder='Digite um título para o chamado' />
                                         {
                                             errors.title && (
                                                 <ErrorMessage>
@@ -120,7 +120,7 @@ export function NewCalledPage() {
                                                 DESCRIÇÃO
                                             </label>
 
-                                            <textarea {...register('description')} placeholder='Descreva o que está acontecendo' className='outline-0 resize-none h-[9.625rem]' />
+                                            <textarea maxLength={250} {...register('description')} placeholder='Descreva o que está acontecendo' className='outline-0 resize-none h-[9.625rem]' />
                                         </div>
                                         {
                                             errors.description && (
