@@ -190,7 +190,7 @@ export function CalledDetailsPage() {
                     </span>
                     <CalledStatus status={called.status} />
                   </div>
-                  <Card.Title title={called?.title} className="text-base" />
+                  <Card.Title title={called?.title} className="text-base whitespace-pre-wrap break-all" />
                 </div>
 
                 <div>
