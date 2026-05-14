@@ -29,7 +29,7 @@ export function AuthForm() {
 
   const router = useRouter()
 
-  const [isLoadingSession, setIsLoadingSession] = useState(false)
+  const [isLoadingAuth, setIsLoadingAuth] = useState(false)
 
   const {
     register,
@@ -42,18 +42,20 @@ export function AuthForm() {
     resolver: zodResolver(authFormSchema),
   })
 
-  const { mutate: createSession, isPending: isCreatingSession } = useMutation({
+  const { mutate: createSession } = useMutation({
     mutationFn: ({ email, password }: AuthForm) =>
       api.post("/sessions", {
         email,
         password,
       }),
+    onMutate: () => {
+      setIsLoadingAuth(true)
+    },
     onSuccess: async () => {
       router.replace("/calleds")
-      router.refresh()
     },
     onError(error) {
-      setIsLoadingSession(false)
+      setIsLoadingAuth(false)
       if (error instanceof AxiosError) {
         const message = error.response?.data.message
         setError("root", { type: "server", message })
@@ -70,12 +72,14 @@ export function AuthForm() {
         email,
         password,
       }),
+    onMutate: () => {
+      setIsLoadingAuth(true)
+    },
     onSuccess: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 100))
-      router.replace("/calleds")
-      router.refresh()
+      router.replace("/sign-in")
     },
     onError(error) {
+      setIsLoadingAuth(false)
       if (error instanceof AxiosError) {
         const message = error.response?.data.message
         setError("root", { type: "server", message })
@@ -101,7 +105,7 @@ export function AuthForm() {
   }
 
   useEffect(() => {
-    if (pathname === "sign-in") {
+    if (pathname === "/sign-in") {
       setFocus("email")
       return
     }
@@ -109,18 +113,13 @@ export function AuthForm() {
     setFocus("name")
   }, [])
 
-  useEffect(() => {
-    if (isCreatingSession) {
-      setIsLoadingSession(true)
-    }
-  }, [isCreatingSession])
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      {pathname.includes("sign-up") && (
+      {pathname.includes("/sign-up") && (
         <div>
           <Input
             error={errors.email || errors.root ? true : false}
-            disabled={isLoadingSession}
+            disabled={isLoadingAuth}
             {...register("name")}
             onChange={(e) => allowJustLetters(e.currentTarget.value)}
             label="nome"
@@ -133,7 +132,7 @@ export function AuthForm() {
       <div>
         <Input
           error={errors.email || errors.root ? true : false}
-          disabled={isLoadingSession}
+          disabled={isLoadingAuth}
           {...register("email")}
           label="email"
           placeholder="exemplo@email.com"
@@ -144,7 +143,7 @@ export function AuthForm() {
       <div>
         <Input
           error={errors.password || errors.root ? true : false}
-          disabled={isLoadingSession}
+          disabled={isLoadingAuth}
           type="password"
           {...register("password")}
           label="senha"
@@ -158,15 +157,15 @@ export function AuthForm() {
       </div>
 
       <Button
-        disabled={isLoadingSession}
+        disabled={isLoadingAuth}
         type="submit"
         variant={"default"}
         className="disabled:opacity-75 disabled:cursor-progress"
       >
-        {isLoadingSession && "Carregando..."}
-        {!isLoadingSession && pathname === "/sign-in" && "Entrar"}
+        {isLoadingAuth && "Carregando..."}
+        {!isLoadingAuth && pathname === "/sign-in" && "Entrar"}
 
-        {!isLoadingSession && pathname === "/sign-up" && "Cadastrar-se"}
+        {!isLoadingAuth && pathname === "/sign-up" && "Cadastrar-se"}
       </Button>
     </form>
   )
