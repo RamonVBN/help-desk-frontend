@@ -10,7 +10,7 @@ import { AxiosError } from "axios"
 import { Input } from "@/components/input"
 import { ErrorMessage } from "@/components/errorMessage"
 import { Button } from "@/components/ui/button"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const authFormSchema = z.object({
   name: z.string().min(3, { error: "Digite um nome válido." }).optional(),
@@ -28,6 +28,8 @@ export function AuthForm() {
   const pathname = usePathname()
 
   const router = useRouter()
+
+  const [isLoadingSession, setIsLoadingSession] = useState(false)
 
   const {
     register,
@@ -106,13 +108,18 @@ export function AuthForm() {
     setFocus("name")
   }, [])
 
+  useEffect(() => {
+    if (isCreatingSession) {
+      setIsLoadingSession(true)
+    }
+  }, [isCreatingSession])
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {pathname.includes("sign-up") && (
         <div>
           <Input
             error={errors.email || errors.root ? true : false}
-            disabled={isCreatingSession}
+            disabled={isLoadingSession}
             {...register("name")}
             onChange={(e) => allowJustLetters(e.currentTarget.value)}
             label="nome"
@@ -125,7 +132,7 @@ export function AuthForm() {
       <div>
         <Input
           error={errors.email || errors.root ? true : false}
-          disabled={isCreatingSession}
+          disabled={isLoadingSession}
           {...register("email")}
           label="email"
           placeholder="exemplo@email.com"
@@ -136,7 +143,7 @@ export function AuthForm() {
       <div>
         <Input
           error={errors.password || errors.root ? true : false}
-          disabled={isCreatingSession}
+          disabled={isLoadingSession}
           type="password"
           {...register("password")}
           label="senha"
@@ -150,15 +157,15 @@ export function AuthForm() {
       </div>
 
       <Button
-        disabled={isCreatingSession}
+        disabled={isLoadingSession}
         type="submit"
         variant={"default"}
         className="disabled:opacity-75 disabled:cursor-progress"
       >
-        {isCreatingSession && "Carregando..."}
-        {!isCreatingSession && pathname === "/sign-in" && "Entrar"}
+        {isLoadingSession && "Carregando..."}
+        {!isLoadingSession && pathname === "/sign-in" && "Entrar"}
 
-        {!isCreatingSession && pathname === "/sign-up" && "Cadastrar-se"}
+        {!isLoadingSession && pathname === "/sign-up" && "Cadastrar-se"}
       </Button>
     </form>
   )
