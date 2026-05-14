@@ -6,6 +6,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { AuthForm } from "@/components/pages/authPages/authForm";
 import { Metadata } from "next";
+import { FastTestCard } from "@/components/pages/authPages/fastTestCard";
 
 export const metadata: Metadata = {
   title: "Entrar",
@@ -15,7 +16,6 @@ export const metadata: Metadata = {
     follow: true, // ainda permite seguir links na página
   },
 };
-
 
 export default async function SignIn() {
 
@@ -43,13 +43,14 @@ export default async function SignIn() {
       <Card.Root className="gap-5">
         <div>
           <Card.Title title="Ainda não tem uma conta?" className="text-base" />
-          <Card.Description description="Cadastre agora mesmo" />
+          <Card.Description description="Cadastre-se agora mesmo" />
         </div>
         <Button variant={'secondary'} asChild>
           <Link href='/sign-up' className="font-bold">Criar Conta</Link>
         </Button>
       </Card.Root>
-    </>
 
+      <FastTestCard/>
+    </>
   );
 }
