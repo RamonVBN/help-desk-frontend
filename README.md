@@ -106,12 +106,9 @@ https://github.com/ramonvbn/help-desk-backend
 src/
  ├── app/                # Rotas e páginas da aplicação
  ├── components/         # Componentes reutilizáveis
- ├── hooks/              # Hooks customizados
- ├── services/           # Configurações de API e serviços
+ ├── libs/               # Configurações de bibliotecas
+ ├── api/                # Configurações, tipagens e chamadas de API e serviços
  ├── utils/              # Funções utilitárias
- ├── contexts/           # Context API
- ├── types/              # Tipagens TypeScript
- ├── validations/        # Schemas Zod
  └── tests/              # Testes da aplicação
 ```
 
@@ -147,105 +144,6 @@ src/
 
 * UI responsiva
 * Componentes acessíveis com Radix UI
-
----
-
-# 🧪 Testes
-
-A aplicação possui testes unitários e testes end-to-end.
-
-## Executar testes unitários
-
-```bash
-npm run test
-```
-
-## Executar testes em modo watch
-
-```bash
-npm run test:watch
-```
-
-## Executar interface do Vitest
-
-```bash
-npm run test:ui
-```
-
-## Executar testes E2E
-
-```bash
-npm run test:e2e
-```
-
-## Executar UI do Playwright
-
-```bash
-npm run test:e2e:ui
-```
-
----
-
-# ▶️ Como executar o projeto
-
-## Pré-requisitos
-
-* Node.js 18+
-* npm, yarn, pnpm ou bun
-
-## Clonar o repositório
-
-```bash
-git clone https://github.com/seu-usuario/help-desk-frontend.git
-```
-
-## Entrar na pasta do projeto
-
-```bash
-cd help-desk-frontend
-```
-
-## Instalar dependências
-
-```bash
-npm install
-```
-
-## Configurar variáveis de ambiente
-
-Crie um arquivo `.env.local`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3333
-```
-
-## Executar em desenvolvimento
-
-```bash
-npm run dev
-```
-
-A aplicação estará disponível em:
-
-```bash
-http://localhost:3000
-```
-
----
-
-# 📦 Scripts disponíveis
-
-| Script                | Descrição                           |
-| --------------------- | ----------------------------------- |
-| `npm run dev`         | Inicia ambiente de desenvolvimento  |
-| `npm run build`       | Gera build de produção              |
-| `npm run start`       | Inicia aplicação em produção        |
-| `npm run lint`        | Executa lint                        |
-| `npm run test`        | Executa testes unitários            |
-| `npm run test:watch`  | Executa testes em modo watch        |
-| `npm run test:ui`     | Abre interface visual do Vitest     |
-| `npm run test:e2e`    | Executa testes E2E                  |
-| `npm run test:e2e:ui` | Abre interface visual do Playwright |
 
 ---
 
