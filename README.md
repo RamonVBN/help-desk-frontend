@@ -96,8 +96,7 @@ https://github.com/ramonvbn/help-desk-backend
 * [Vitest](https://vitest.dev/)
 * [Testing Library](https://testing-library.com/)
 * [Playwright](https://playwright.dev/)
-* [MSW](https://mswjs.io/)
-
+  
 ---
 
 # 📁 Estrutura do projeto
