@@ -47,7 +47,6 @@ export function AuthForm() {
         password,
       }),
     onSuccess: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 100))
       router.replace("/calleds")
       router.refresh()
     },

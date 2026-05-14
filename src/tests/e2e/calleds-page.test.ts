@@ -4,17 +4,23 @@ import { v4 as uuidv4 } from "uuid";
 
 test('Calleds page', async ({ context, page }) => {
 
-    await context.addCookies([{
-        name: 'access_token',
-        value: 'fake-token-123',
-        domain: 'localhost',
-        path: '/',
-    }])
+    await context.addCookies([
+    {
+        name: "access_token",
+        value:
+        "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4ifQ.fake-signature",
+        domain: "localhost",
+        path: "/",
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+    },
+    ]);
 
-    await page.route("**/calleds/*", async (route) => {
+    await page.route("**/api/calleds**", async (route) => {
         const type = route.request().resourceType()
 
-        if (type === 'document' || 'image') {
+        if (type === 'document' || type === 'image') {
             
             return route.continue()
         }
@@ -23,7 +29,7 @@ test('Calleds page', async ({ context, page }) => {
             status: 200,
             contentType: "application/json",
             body: JSON.stringify({
-                called: {
+                calleds: [{
                         id: '1',
                         title: 'Teste Mock',
                         description: 'Testando',
@@ -57,15 +63,38 @@ test('Calleds page', async ({ context, page }) => {
                                 price: 10,
                             }
                         ]
-                }
+                }]
             }),
         })
     })
 
-    await page.goto('http://localhost:3000')
+     await page.route("**/api/users/me", async (route) => {
+        const type = route.request().resourceType()
+
+        if (type === 'document' || type === 'image') {
+            
+            return route.continue()
+        }
+
+        await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+               user: {
+                id: 1,
+                name: "Ramon",
+                email: "ramon@gmail.com",
+                role: 'ADMIN',
+                imageUrl: null,
+               }
+            }),
+        })
+    })
+
+    await page.goto('http://localhost:3000/calleds')
 
     await expect(page.getByText("Ramon", { exact: true })).toBeVisible()
-    await expect(page.getByText("ramon@teste.com")).toBeVisible()
+    await expect(page.getByText("ramon@gmail.com")).toBeVisible()
 
     const row = page.locator("table tbody tr")
     await expect(row.first()).toBeVisible()
@@ -102,7 +131,7 @@ test('Calleds Details page', async ({ context, page }) => {
         })
     })
 
-    await page.route(`**/calleds/*`, async (route) => {
+    await page.route(`**/api/   calleds/*`, async (route) => {
         const type = route.request().resourceType()
 
         if (type === 'document' || type === 'image') {

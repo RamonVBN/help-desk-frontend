@@ -77,10 +77,16 @@ export function middleware(req: NextRequest) {
 
     const role = decoded?.role;
 
+    // Token inválido ou role inexistente
     if (!role || !roleRoutes[role]) {
-      return NextResponse.redirect(
-        new URL(DEFAULT_AUTHENTICATED_ROUTE, req.url)
+      const response = NextResponse.redirect(
+        new URL(REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE, req.url)
       );
+
+      // remove cookie inválido
+      response.cookies.delete("access_token");
+
+      return response;
     }
 
     const isAllowed = roleRoutes[role].some((pattern) =>
