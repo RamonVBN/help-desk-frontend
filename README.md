@@ -33,14 +33,56 @@ https://github.com/ramonvbn/help-desk-backend
 
 ---
 
+## 📸 Screenshots
+
+### Login
+
+![Sign-in](./docs/login.png)
+
+### Serviços
+
+![Services](./docs/services.png)
+
+### Perfil de técnico
+
+![Tech profile](./docs/update-technician.png)
+
+### Chamado detalhado
+
+![Called details](./docs/called-details.png)
+
+### Novo chamado
+
+![New called](./docs/create-called.png)
+
+
+### Perfil de usuário
+
+![User Profile](./docs/profile-modal.png)
+
+
+### Mobile
+
+![Mobile login](./docs/login-mobile.png)
+
+---
+
+![Mobile services](./docs/services-mobile.png)
+
+---
+
+![Mobile nav menu](./docs/nav-menu-mobile.png)
+
+---
+
 # 🚀 Tecnologias utilizadas
 
 ## Frontend
 
-* [Next.js 16](https://nextjs.org/)
-* [React 19](https://react.dev/)
+* [Next.js](https://nextjs.org/)
+* [React](https://react.dev/)
 * [TypeScript](https://www.typescriptlang.org/)
-* [TailwindCSS 4](https://tailwindcss.com/)
+* [TailwindCSS](https://tailwindcss.com/)
 * [Radix UI](https://www.radix-ui.com/)
 * [ShadcnUi](https://ui.shadcn.com/)
 * [React Hook Form](https://react-hook-form.com/)
@@ -54,8 +96,7 @@ https://github.com/ramonvbn/help-desk-backend
 * [Vitest](https://vitest.dev/)
 * [Testing Library](https://testing-library.com/)
 * [Playwright](https://playwright.dev/)
-* [MSW](https://mswjs.io/)
-
+  
 ---
 
 # 📁 Estrutura do projeto
@@ -64,12 +105,9 @@ https://github.com/ramonvbn/help-desk-backend
 src/
  ├── app/                # Rotas e páginas da aplicação
  ├── components/         # Componentes reutilizáveis
- ├── hooks/              # Hooks customizados
- ├── services/           # Configurações de API e serviços
+ ├── libs/               # Configurações de bibliotecas
+ ├── api/                # Configurações, tipagens e chamadas de API e serviços
  ├── utils/              # Funções utilitárias
- ├── contexts/           # Context API
- ├── types/              # Tipagens TypeScript
- ├── validations/        # Schemas Zod
  └── tests/              # Testes da aplicação
 ```
 
@@ -108,105 +146,6 @@ src/
 
 ---
 
-# 🧪 Testes
-
-A aplicação possui testes unitários e testes end-to-end.
-
-## Executar testes unitários
-
-```bash
-npm run test
-```
-
-## Executar testes em modo watch
-
-```bash
-npm run test:watch
-```
-
-## Executar interface do Vitest
-
-```bash
-npm run test:ui
-```
-
-## Executar testes E2E
-
-```bash
-npm run test:e2e
-```
-
-## Executar UI do Playwright
-
-```bash
-npm run test:e2e:ui
-```
-
----
-
-# ▶️ Como executar o projeto
-
-## Pré-requisitos
-
-* Node.js 18+
-* npm, yarn, pnpm ou bun
-
-## Clonar o repositório
-
-```bash
-git clone https://github.com/seu-usuario/help-desk-frontend.git
-```
-
-## Entrar na pasta do projeto
-
-```bash
-cd help-desk-frontend
-```
-
-## Instalar dependências
-
-```bash
-npm install
-```
-
-## Configurar variáveis de ambiente
-
-Crie um arquivo `.env.local`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3333
-```
-
-## Executar em desenvolvimento
-
-```bash
-npm run dev
-```
-
-A aplicação estará disponível em:
-
-```bash
-http://localhost:3000
-```
-
----
-
-# 📦 Scripts disponíveis
-
-| Script                | Descrição                           |
-| --------------------- | ----------------------------------- |
-| `npm run dev`         | Inicia ambiente de desenvolvimento  |
-| `npm run build`       | Gera build de produção              |
-| `npm run start`       | Inicia aplicação em produção        |
-| `npm run lint`        | Executa lint                        |
-| `npm run test`        | Executa testes unitários            |
-| `npm run test:watch`  | Executa testes em modo watch        |
-| `npm run test:ui`     | Abre interface visual do Vitest     |
-| `npm run test:e2e`    | Executa testes E2E                  |
-| `npm run test:e2e:ui` | Abre interface visual do Playwright |
-
----
-
 # 🎨 Padrões utilizados
 
 * Componentização
@@ -220,7 +159,7 @@ http://localhost:3000
 
 # 👨‍💻 Autor
 
-Desenvolvido por Ramon Victor Barros Nunes.
+Desenvolvido por **Ramon Victor Barros Nunes**.
 
 * GitHub: [https://github.com/RamonVBN](https://github.com/RamonVBN)
 * LinkedIn: [https://linkedin.com/in/ramon-barros-4a107837a](https://linkedin.com/in/ramon-barros-4a107837a)
