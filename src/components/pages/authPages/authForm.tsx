@@ -53,6 +53,7 @@ export function AuthForm() {
       router.refresh()
     },
     onError(error) {
+      setIsLoadingSession(false)
       if (error instanceof AxiosError) {
         const message = error.response?.data.message
         setError("root", { type: "server", message })
