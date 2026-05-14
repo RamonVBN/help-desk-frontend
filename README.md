@@ -79,10 +79,10 @@ https://github.com/ramonvbn/help-desk-backend
 
 ## Frontend
 
-* [Next.js 16](https://nextjs.org/)
-* [React 19](https://react.dev/)
+* [Next.js](https://nextjs.org/)
+* [React](https://react.dev/)
 * [TypeScript](https://www.typescriptlang.org/)
-* [TailwindCSS 4](https://tailwindcss.com/)
+* [TailwindCSS](https://tailwindcss.com/)
 * [Radix UI](https://www.radix-ui.com/)
 * [ShadcnUi](https://ui.shadcn.com/)
 * [React Hook Form](https://react-hook-form.com/)
