@@ -33,6 +33,48 @@ https://github.com/ramonvbn/help-desk-backend
 
 ---
 
+## 📸 Screenshots
+
+### Login
+
+![Sign-in](./docs/login.png)
+
+### Serviços
+
+![Services](./docs/services.png)
+
+### Perfil de técnico
+
+![Tech profile](./docs/update-technician.png)
+
+### Chamado detalhado
+
+![Called details](./docs/called-details.png)
+
+### Novo chamado
+
+![New called](./docs/create-called.png)
+
+
+### Perfil de usuário
+
+![User Profile](./docs/profile-modal.png)
+
+
+### Mobile
+
+![Mobile login](./docs/login-mobile.png)
+
+---
+
+![Mobile services](./docs/services-mobile.png)
+
+---
+
+![Mobile nav menu](./docs/nav-menu-mobile.png)
+
+---
+
 # 🚀 Tecnologias utilizadas
 
 ## Frontend
