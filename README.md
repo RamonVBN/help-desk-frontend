@@ -6,7 +6,7 @@ Frontend de uma aplicação de gerenciamento de chamados de suporte de T.I. dese
 
 # 📋 Sobre o projeto
 
-O **HelpDesk Frontend** é a interface web da aplicação HelpDesk, responsável por permitir que usuários e técnicos possam:
+O **HelpDesk Frontend** é a interface web da aplicação HelpDesk, responsável por permitir que usuários possam:
 
 * Criar chamados de suporte
 * Acompanhar status dos chamados
