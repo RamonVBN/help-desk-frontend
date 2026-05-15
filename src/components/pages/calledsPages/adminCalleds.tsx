@@ -17,7 +17,6 @@ import Link from "next/link"
 import { useQuery } from "@tanstack/react-query"
 import { getCalleds } from "@/api/clientFetchs/getCalleds"
 
-import { format } from 'date-fns'
 import { formatPrice } from "@/utils/formatPrice"
 import { Called } from "@/api/types"
 import { Button } from "@/components/ui/button"

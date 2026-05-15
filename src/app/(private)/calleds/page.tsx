@@ -5,6 +5,7 @@ import { TechCalleds } from "@/components/pages/calledsPages/techCalleds";
 import { getUserServer } from "@/api/serverFetchs/getUser";
 import { getCalledsServer } from "@/api/serverFetchs/getCalleds";
 import { Metadata } from "next";
+import { Called } from "@/api/types";
 
 const siteUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -29,7 +30,14 @@ export default async function Calleds() {
 
     const user = await getUserServer()
 
-    const calleds = await getCalledsServer()
+    const calleds: Called[] = await getCalledsServer()
+    
+    if (calleds.length < 1) {
+        
+        return <div className="w-full flex items-center justify-center gap-2">
+            <span className="font-bold text-xl" >Nenhum chamado encontrado</span>
+        </div>
+    }
 
     if (user.role === 'ADMIN') {
 

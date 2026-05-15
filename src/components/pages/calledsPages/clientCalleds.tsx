@@ -42,14 +42,6 @@ export function ClientCalleds({initialCalledsData}: ClientCalledsProps) {
         document.title = 'Meus chamados | HelpDesk'
     }, [])
 
-
-    if (clientCalleds.length < 1) {
-        
-        return <div className="w-full flex items-center justify-center gap-2">
-            <span className="font-bold text-xl" >Nenhum chamado encontrado</span>
-        </div>
-    }
-
     return (
         <div className="flex flex-col w-full gap-4 md:gap-6">
             <h1 className="font-bold text-xl leading-[140%] text-blue-800">Meus chamados</h1>
