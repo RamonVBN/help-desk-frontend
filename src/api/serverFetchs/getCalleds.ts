@@ -11,9 +11,6 @@ export async function getCalledsServer() {
 
     const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL
     const res = await fetch(`${baseUrl}/api/calleds`, {
-        next: {
-            revalidate: 60
-        },
         headers: {
             Cookie: `${token?.name}=${token?.value}`
         }

@@ -97,7 +97,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
     resolver: zodResolver(schema),
   })
 
-  const { mutate: updateTechProfile, isPending: isPendingTechProfile } =
+  const { mutate: updateTechProfile, isPending: isUpdatingTechProfile } =
     useMutation({
       mutationFn: ({
         name,
@@ -124,7 +124,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
       },
     })
 
-  const { mutate: createTechProfile } = useMutation({
+  const { mutate: createTechProfile, isPending: isCreatingTechProfile } = useMutation({
     mutationFn: ({
       name,
       email,
@@ -153,6 +153,8 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
       }
     },
   })
+
+  const isPending = isCreatingTechProfile || isUpdatingTechProfile
 
   function onSubmit(
     data: TechnicianUpdateProfileForm | TechnicianCreateProfileForm,
@@ -209,7 +211,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
           href={"/technicians"}
           className="flex gap-2 items-center font-bold text-xs leading-[140%] text-gray-300"
         >
-          <Button variant={"ghost"} className="p-2 mr-auto">
+          <Button disabled={isPending} variant={"ghost"} className="p-2 mr-auto">
             <ArrowLeft size={14} />
             Voltar
           </Button>
@@ -227,13 +229,13 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
                   className="flex-[1_1_20.875rem] lg:flex-initial"
                   href={"/technicians"}
                 >
-                  <Button type="button" className="rounded-[5px] w-full ">
+                  <Button disabled={isPending} type="button" className="rounded-[5px] w-full ">
                     Cancelar
                   </Button>
                 </Link>
 
                 <Button
-                  disabled={isPendingTechProfile}
+                  disabled={isPending}
                   type="submit"
                   variant={"secondary"}
                   className="rounded-[5px] flex-[1_1_20.875rem] lg:flex-initial"
@@ -264,6 +266,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
 
                   <div>
                     <Input
+                    disabled={isPending}
                       error={errors.root || errors.name ? true : false}
                       {...register("name")}
                       onChange={(e) => allowJustLetters(e.currentTarget.value)}
@@ -277,6 +280,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
 
                   <div>
                     <Input
+                    disabled={isPending}
                       error={errors.root || errors.email ? true : false}
                       {...register("email")}
                       label="E-MAIL"
@@ -290,6 +294,7 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
                   {!techId && (
                     <div>
                       <Input
+                      disabled={isPending}
                         error={errors.root || errors.password ? true : false}
                         {...register("password")}
                         label="SENHA"
@@ -322,10 +327,12 @@ export function TechnicianProfilePage({ mode }: TechnicianProfileFormProps) {
                 </div>
 
                 <Controller
+                  disabled={isPending}
                   name="availableHours"
                   control={control}
                   render={({ field }) => (
                     <HoursSelect
+                      isPending={isPending}
                       value={field.value}
                       onChange={field.onChange}
                     />

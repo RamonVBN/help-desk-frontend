@@ -4,9 +4,10 @@ import { X } from 'lucide-react'
 type HoursSelectProps = {
   value: string[]
   onChange: (value: string[]) => void
+  isPending: boolean
 }
 
-export function HoursSelect({value, onChange}: HoursSelectProps) {
+export function HoursSelect({value, onChange, isPending}: HoursSelectProps) {
 
     const morningHours = ['07:00', '08:00', '09:00', '10:00', '11:00']
     const afternoonHours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
@@ -24,7 +25,7 @@ export function HoursSelect({value, onChange}: HoursSelectProps) {
                             morningHours.map((hour, i) => {
 
                                 return (
-                                    <ToggleGroup.Item key={i} asChild value={hour}>
+                                    <ToggleGroup.Item disabled={isPending} key={i} asChild value={hour}>
                                         <span className="group flex gap-1 p-1.5 px-3 rounded-full border border-gray-400
                                                     font-bold text-gray-200 text-xs leading-[140%] data-[state=on]:bg-blue-300 data-[state=on]:text-gray-600 data-[state=on]:border-transparent
                                                     data-[state=off]:hover:bg-gray-500 cursor-pointer">
@@ -47,7 +48,7 @@ export function HoursSelect({value, onChange}: HoursSelectProps) {
                             afternoonHours.map((hour, i) => {
 
                                 return (
-                                    <ToggleGroup.Item key={i} asChild value={hour}>
+                                    <ToggleGroup.Item disabled={isPending} key={i} asChild value={hour}>
                                         <span className="group flex gap-1 p-1.5 px-3 rounded-full border border-gray-400
                                                     font-bold text-gray-200 text-xs leading-[140%] data-[state=on]:bg-blue-300 data-[state=on]:text-gray-600 data-[state=on]:border-transparent
                                                     data-[state=off]:hover:bg-gray-500 cursor-pointer">
@@ -71,7 +72,7 @@ export function HoursSelect({value, onChange}: HoursSelectProps) {
                             nightHours.map((hour, i) => {
 
                                 return (
-                                    <ToggleGroup.Item key={i} asChild value={hour}>
+                                    <ToggleGroup.Item disabled={isPending} key={i} asChild value={hour}>
                                         <span className="group flex gap-1 p-1.5 px-3 rounded-full border border-gray-400
                                                     font-bold text-gray-200 text-xs leading-[140%] data-[state=on]:bg-blue-300 data-[state=on]:text-gray-600 data-[state=on]:border-transparent
                                                     data-[state=off]:hover:bg-gray-500 cursor-pointer">

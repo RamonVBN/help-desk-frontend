@@ -32,12 +32,6 @@ export default async function Calleds() {
 
     const calleds: Called[] = await getCalledsServer()
     
-    if (calleds.length < 1) {
-        
-        return <div className="w-full flex items-center justify-center gap-2">
-            <span className="font-bold text-xl" >Nenhum chamado encontrado</span>
-        </div>
-    }
 
     if (user.role === 'ADMIN') {
 
