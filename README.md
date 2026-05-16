@@ -1,6 +1,6 @@
 # HelpDesk Frontend
 
-Frontend de uma aplicação de gerenciamento de chamados de suporte de T.I. desenvolvido com **Next.js**, focado em organização, gerenciamento e acompanhamento de tickets de suporte técnico.
+Aplicação de gerenciamento de chamados de suporte de T.I. desenvolvido com **Next.js**, focado em organização e acompanhamento de tickets de suporte técnico.
 
 ---
 
@@ -108,6 +108,7 @@ src/
  ├── libs/               # Configurações de bibliotecas
  ├── api/                # Configurações, tipagens e chamadas de API e serviços
  ├── utils/              # Funções utilitárias
+ ├── mocks/              # Objetos simulados
  └── tests/              # Testes da aplicação
 ```
 
@@ -154,6 +155,22 @@ src/
 * Validação com Zod
 * Gerenciamento de estado servidor com React Query
 * Formulários com React Hook Form
+
+---
+
+# 🧪 Testes
+
+## Executar testes E2E
+
+```bash
+npm run test:e2e
+```
+
+## Executar UI do Playwright
+
+```bash
+npm run test:e2e:ui
+```
 
 ---
 
