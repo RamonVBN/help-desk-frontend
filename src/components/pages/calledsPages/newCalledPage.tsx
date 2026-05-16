@@ -17,12 +17,12 @@ import {
 import { api } from '@/libs/axios'
 import { getServices } from '@/api/clientFetchs/getServices'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
-import { Service } from '@/api/types'
+import { Called, Service } from '@/api/types'
 
 const newCalledFormSchema = z.object({
     title: z.string().trim().min(3, { error: 'Digite um título válido.' }),
@@ -33,6 +33,8 @@ const newCalledFormSchema = z.object({
 type NewCalledPageForm = z.infer<typeof newCalledFormSchema>
 
 export function NewCalledPage() {
+
+    const queryClient = useQueryClient()
 
     const router = useRouter()
 
@@ -57,6 +59,7 @@ export function NewCalledPage() {
             serviceId
         }),
         onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['calleds']})
             router.replace('/calleds')
             reset()
         },
