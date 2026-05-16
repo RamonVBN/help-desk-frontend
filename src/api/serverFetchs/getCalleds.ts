@@ -1,6 +1,11 @@
+import { calledsList } from "@/mocks/calleds"
 import { getToken } from "../utils/getToken"
 
 export async function getCalledsServer() {
+
+    if (process.env.E2E_MOCKS === 'enabled') {
+        return calledsList
+    }
 
     const token = await getToken()
 

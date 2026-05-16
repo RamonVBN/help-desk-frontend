@@ -1,33 +1,25 @@
+import { calledsList } from "@/mocks/calleds";
+import { techCookies } from "@/mocks/cookies";
+import { techUser } from "@/mocks/users";
 import test, { expect } from "@playwright/test";
 
 test('Profile modal', async ({page, context}) => {
 
-     await context.addCookies([{
-        name: 'access_token',
-        value: 'fake-token-123',
-        domain: 'localhost',
-        path: '/',
-    }])
+    await context.addCookies([
+        techCookies
+    ]);
 
     await page.route("**/users/me", async (route) => {
         await route.fulfill({
             status: 200,
             contentType: "application/json",
             body: JSON.stringify({
-                user: {
-                    id: 1,
-                    name: "Ramon",
-                    email: "ramon@teste.com",
-                    role: 'TECHNICIAN',
-                    imageUrl: null,
-                    availableHours: ['7:00', '8:00', '9:00', '10:00', '11:00'],
-                }
+                user: techUser
             }),
         })
     })
 
     await page.route("**/users/1", async (route) => {
-        const request = route.request()
         await route.fulfill({
             status: 200,
             contentType: "application/json",
@@ -35,12 +27,29 @@ test('Profile modal', async ({page, context}) => {
         })
     })
 
-    await page.goto('http://localhost:3000/calleds')
+    await page.route("**/api/calleds**", async (route) => {
+        const type = route.request().resourceType()
+    
+        if (type === 'document' || type === 'image') {
+            
+            return route.continue()
+        }
+    
+        await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+                calleds: calledsList
+            }),
+        })
+      })
 
-    await expect(page.getByText("Ramon", { exact: true })).toBeVisible()
-    await expect(page.getByText("ramon@teste.com")).toBeVisible()
+    await page.goto('/calleds')
 
-    const username = page.getByText("Ramon", { exact: true })
+    await expect(page.getByText("teste", { exact: true })).toBeVisible()
+    await expect(page.getByText("teste@gmail.com")).toBeVisible()
+
+    const username = page.getByText("teste", { exact: true })
 
     await username.click()
 
@@ -52,8 +61,8 @@ test('Profile modal', async ({page, context}) => {
 
     await expect(changePasswordModalButton).toBeVisible()
 
-    await page.fill('input[name="name"]', "Ramon atualizado")
-    await page.fill('input[name="email"]', "ramonatualizado@teste.com")
+    await page.fill('input[name="name"]', "teste atualizado")
+    await page.fill('input[name="email"]', "testeatualizado@gmail.com")
     await page.click('button[type="submit"]')
 
     await expect(changePasswordModalButton).toBeHidden()

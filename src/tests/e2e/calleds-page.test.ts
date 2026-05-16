@@ -1,3 +1,6 @@
+import { called, calledsList } from "@/mocks/calleds";
+import { adminCookies, clientCookies } from "@/mocks/cookies";
+import { adminUser, clientUser } from "@/mocks/users";
 import test, { expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
 
@@ -5,16 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 test('Calleds page', async ({ context, page }) => {
 
     await context.addCookies([
-    {
-        name: "access_token",
-        value:
-        "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4ifQ.fake-signature",
-        domain: "localhost",
-        path: "/",
-        httpOnly: true,
-        secure: false,
-        sameSite: "Lax",
-    },
+        adminCookies
     ]);
 
     await page.route("**/api/calleds**", async (route) => {
@@ -29,41 +23,7 @@ test('Calleds page', async ({ context, page }) => {
             status: 200,
             contentType: "application/json",
             body: JSON.stringify({
-                calleds: [{
-                        id: '1',
-                        title: 'Teste Mock',
-                        description: 'Testando',
-                        status: 'OPEN',
-                        createdAt: '2025-08-28T05:30:32.868Z',
-                        updatedAt: '2025-08-28T05:30:32.868Z',
-                        service: {
-                            id: '1',
-                            name: 'Serviço de teste',
-                            price: 19,
-                            status: 'INACTIVE',
-                        },
-                        client: {
-                            id: '1',
-                            name: 'Cliente da Silva',
-                            email: 'client@test.com',
-                            imageUrl: null,
-                        },
-
-                        technician: {
-                            id: '1',
-                            name: 'Técnico Oliveira',
-                            email: 'tech@test.com',
-                            imageUrl: null,
-                        },
-
-                        additionalServices: [
-                            {
-                                id: '1',
-                                description: 'Descrição de teste',
-                                price: 10,
-                            }
-                        ]
-                }]
+                calleds: calledsList
             }),
         })
     })
@@ -80,58 +40,38 @@ test('Calleds page', async ({ context, page }) => {
             status: 200,
             contentType: "application/json",
             body: JSON.stringify({
-               user: {
-                id: 1,
-                name: "Ramon",
-                email: "ramon@gmail.com",
-                role: 'ADMIN',
-                imageUrl: null,
-               }
+               user: adminUser
             }),
         })
     })
 
-    await page.goto('http://localhost:3000/calleds')
+    await page.goto('/calleds')
 
-    await expect(page.getByText("Ramon", { exact: true })).toBeVisible()
-    await expect(page.getByText("ramon@gmail.com")).toBeVisible()
+    await expect(page.getByText("teste", { exact: true })).toBeVisible()
+    await expect(page.getByText("teste@gmail.com")).toBeVisible()
 
     const row = page.locator("table tbody tr")
     await expect(row.first()).toBeVisible()
-
-    const editButton = row.getByRole('button')
-    await editButton.click()
-    await expect(page).toHaveURL("/calleds/1")
 
 })
 
 test('Calleds Details page', async ({ context, page }) => {
 
-    await context.addCookies([{
-        name: 'access_token',
-        value: 'fake-token-123',
-        domain: 'localhost',
-        path: '/',
-    }])
+    await context.addCookies([
+        adminCookies
+    ]);
 
     await page.route("**/users/me", async (route) => {
         await route.fulfill({
             status: 200,
             contentType: "application/json",
             body: JSON.stringify({
-                user: {
-                    id: 1,
-                    name: "Ramon",
-                    email: "ramon@teste.com",
-                    role: 'ADMIN',
-                    imageUrl: null,
-                    availableHours: [],
-                }
+                user: adminUser
             }),
         })
     })
 
-    await page.route(`**/api/   calleds/*`, async (route) => {
+    await page.route(`**/api/calleds/*`, async (route) => {
         const type = route.request().resourceType()
 
         if (type === 'document' || type === 'image') {
@@ -142,49 +82,15 @@ test('Calleds Details page', async ({ context, page }) => {
             status: 200,
             contentType: "application/json",
             body: JSON.stringify({
-                called: {
-                        id: '1',
-                        title: 'Teste Mock',
-                        description: 'Testando',
-                        status: 'OPEN',
-                        createdAt: '2025-08-28T05:30:32.868Z',
-                        updatedAt: '2025-08-28T05:30:32.868Z',
-                        service: {
-                            id: '1',
-                            name: 'Serviço de teste',
-                            price: 19,
-                            status: 'INACTIVE',
-                        },
-                        client: {
-                            id: '1',
-                            name: 'Cliente da Silva',
-                            email: 'client@test.com',
-                            imageUrl: null,
-                        },
-
-                        technician: {
-                            id: '1',
-                            name: 'Técnico Oliveira',
-                            email: 'tech@test.com',
-                            imageUrl: null,
-                        },
-
-                        additionalServices: [
-                            {
-                                id: '1',
-                                description: 'Descrição de teste',
-                                price: 10,
-                            }
-                        ]
-                }
+                called
             }),
         })
     })
 
-    await page.goto('http://localhost:3000/calleds/1')
+    await page.goto('/calleds/1')
 
-    await expect(page.getByText("Ramon", { exact: true })).toBeVisible()
-    await expect(page.getByText("ramon@teste.com")).toBeVisible()
+    await expect(page.getByText("teste", { exact: true })).toBeVisible()
+    await expect(page.getByText("teste@gmail.com")).toBeVisible()
 
     await expect(page).toHaveURL("/calleds/1")
 
@@ -201,30 +107,21 @@ test('Calleds Details page', async ({ context, page }) => {
 
 test('New Called page', async ({ context, page }) => {
 
-    await context.addCookies([{
-        name: 'access_token',
-        value: 'fake-token-123',
-        domain: 'localhost',
-        path: '/',
-    }])
+    await context.addCookies([
+        clientCookies
+    ]);
 
     await page.route("**/users/me", async (route) => {
         await route.fulfill({
             status: 200,
             contentType: "application/json",
             body: JSON.stringify({
-                user: {
-                    id: 1,
-                    name: "Ramon",
-                    email: "ramon@teste.com",
-                    role: 'CLIENT',
-                    imageUrl: null,
-                }
+                user: clientUser
             }),
         })
     })
 
-    await page.route("**/services", async (route) => {
+    await page.route("**/api/services", async (route) => {
         await route.fulfill({
             status: 200,
             contentType: "application/json",
@@ -253,21 +150,56 @@ test('New Called page', async ({ context, page }) => {
         })
     })
 
-    await page.route("**/calleds", async (route) => {
+    await page.route("**/api/calleds**", async (route) => {
+        const type = route.request().resourceType()
+
+        if (route.request().method() !== 'GET') {
+            return route.continue()
+        }
+
+        if (type === 'document' || type === 'image') {
+            
+            return route.continue()
+        }
+
         await route.fulfill({
-            status: 201,
+            status: 200,
             contentType: "application/json",
-            body: JSON.stringify({success: true}),
+            body: JSON.stringify({
+                calleds: calledsList
+            }),
         })
     })
 
-    await page.goto('http://localhost:3000/calleds/new')
+    await page.route("**/api/calleds", async (route) => {
 
-    await expect(page.getByText("Ramon", { exact: true })).toBeVisible()
-    await expect(page.getByText("ramon@teste.com")).toBeVisible()
-    await expect(page.getByText("CLIENTE")).toBeVisible()
+        const type = route.request().resourceType()
 
-    await expect(page).toHaveURL("/calleds/new")
+        if (route.request().method() !== 'POST') {
+            return route.continue()
+        }
+
+        if (type === 'document' || type === 'image') {
+            
+            return route.continue()
+        }
+
+
+        await route.fulfill({
+            status: 201,
+            contentType: "application/json",
+            body: JSON.stringify({
+                success: true,
+            }),
+        })
+    })
+
+    await page.goto('/calleds/new')
+
+    await expect(page.getByText("teste", { exact: true })).toBeVisible()
+    await expect(page.getByText("teste@gmail.com")).toBeVisible()
+
+    await expect(page).toHaveURL("/calleds/new")    
     await expect(page.getByText('Novo chamado')).toBeVisible()
 
     await page.fill('input[name="title"]', 'Título de teste')

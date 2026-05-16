@@ -8,9 +8,25 @@ type generateMetadataProps = { params: Promise<{ id: string }> };
 export async function generateMetadata({ params }: generateMetadataProps): Promise<Metadata> {
     const siteUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3333";
+    : "http://localhost:3000";
 
-  const { id } = await params
+
+    const { id } = await params
+
+    if(process.env.E2E_MOCKS === 'enabled'){
+      return {
+      title: "Chamado de teste",
+      description: "teste",
+      openGraph: {
+        title: "Chamado de teste | HelpDesk",
+        description: "teste",
+        url: `${siteUrl}/calleds/${id}`,
+      },
+      alternates: {
+        canonical: `${siteUrl}/calleds/${id}`,
+      },
+    }
+    }
 
   const token = await getToken()
 
@@ -38,6 +54,7 @@ export async function generateMetadata({ params }: generateMetadataProps): Promi
         canonical: `${siteUrl}/calleds/${id}`,
       },
     }
+
   }
 
   // Retorna um objeto do tipo Metadata

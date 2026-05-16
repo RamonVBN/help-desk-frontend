@@ -1,6 +1,11 @@
 import { getToken } from "../utils/getToken"
+import { adminUser } from "@/mocks/users"
 
 export async function getUserServer() {
+
+    if (process.env.E2E_MOCKS === 'enabled') {
+        return adminUser
+    }
 
     const token = await getToken()
 

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 const siteUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3333";
+    : "http://localhost:3000";
 
 export const metadata: Metadata = {
   title: "Novo chamado",
