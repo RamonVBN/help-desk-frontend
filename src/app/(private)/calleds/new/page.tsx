@@ -1,9 +1,9 @@
 import { NewCalledPage } from "@/components/pages/calledsPages/newCalledPage"
-import { Metadata } from "next";
+import { Metadata } from "next"
 
 const siteUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000"
 
 export const metadata: Metadata = {
   title: "Novo chamado",
@@ -18,11 +18,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${siteUrl}/calleds/new`,
   },
-};
+}
 
 export default function NewCalled() {
-    
-    return (
-        <NewCalledPage/>
-    )
+  return <NewCalledPage />
 }

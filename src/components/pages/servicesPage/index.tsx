@@ -70,11 +70,11 @@ export function ServicesPageTable({
         })
 
         const updatedActiveServices = updatedServiceData.filter(
-          (service) => service.status === "ACTIVE"
+          (service) => service.status === "ACTIVE",
         )
 
         const updatedInactiveServices = updatedServiceData.filter(
-          (service) => service.status === "INACTIVE"
+          (service) => service.status === "INACTIVE",
         )
 
         const sortedServices = [
@@ -88,8 +88,11 @@ export function ServicesPageTable({
       return { previousServices }
     },
     onError(error, _, context) {
-        console.log(error)
-      queryClient.setQueryData<Service[]>(["services"], context?.previousServices)
+      console.log(error)
+      queryClient.setQueryData<Service[]>(
+        ["services"],
+        context?.previousServices,
+      )
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["services"] })

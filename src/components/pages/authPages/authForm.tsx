@@ -53,6 +53,8 @@ export function AuthForm() {
     },
     onSuccess: async () => {
       router.replace("/calleds")
+      router.refresh()
+
     },
     onError(error) {
       setIsLoadingAuth(false)

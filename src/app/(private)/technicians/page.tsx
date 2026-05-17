@@ -1,6 +1,6 @@
-import { getTechniciansServer } from "@/api/serverFetchs/getTechnicians";
-import { TechniciansTablePage } from "@/components/pages/techniciansPages/techniciansTablePage";
-import { Metadata } from "next";
+import { getTechniciansServer } from "@/api/serverFetchs/getTechnicians"
+import { TechniciansTablePage } from "@/components/pages/techniciansPages/techniciansTablePage"
+import { Metadata } from "next"
 
 const siteUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -19,13 +19,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${siteUrl}/technicians`,
   },
-};
+}
 
 export default async function Technicians() {
+  const technicians = await getTechniciansServer()
 
-    const technicians = await getTechniciansServer()
-
-    return (
-        <TechniciansTablePage initialTechniciansData={technicians}/>
-    )
+  return <TechniciansTablePage initialTechniciansData={technicians} />
 }

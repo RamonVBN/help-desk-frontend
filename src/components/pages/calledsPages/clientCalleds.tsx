@@ -12,13 +12,14 @@ import { Avatar } from "../../avatar"
 import { CalledStatus } from "./components/calledStatus"
 import Link from "next/link"
 import { Button } from "../../ui/button"
-import { Eye, Frown } from "lucide-react"
+import { Eye } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { getCalleds } from "@/api/clientFetchs/getCalleds"
 import { formatPrice } from "@/utils/formatPrice"
 import { format } from "date-fns"
 import { Called } from "@/api/types"
 import { useEffect } from "react"
+import { CalledsPageFallback } from "./components/calledsPageFallback"
 
 interface ClientCalledsProps {
 
@@ -32,11 +33,6 @@ export function ClientCalleds({initialCalledsData}: ClientCalledsProps) {
         queryFn: getCalleds,
     })
 
-    if (!clientCalleds) {
-        
-        return
-    }
-
     useEffect(() => {
 
         document.title = 'Meus chamados | HelpDesk'
@@ -44,7 +40,10 @@ export function ClientCalleds({initialCalledsData}: ClientCalledsProps) {
 
     return (
         <div className="flex flex-col w-full gap-4 md:gap-6">
-            <h1 className="font-bold text-xl leading-[140%] text-blue-800">Meus chamados</h1>
+            {
+                clientCalleds.length >= 1 ? (
+                    <>
+                        <h1 className="font-bold text-xl leading-[140%] text-blue-800">Meus chamados</h1>
 
             <div className="border rounded-[10px] lg:overflow-y-auto scrollbar-no-arrows">
                 <Table>
@@ -125,6 +124,9 @@ export function ClientCalleds({initialCalledsData}: ClientCalledsProps) {
                     </TableBody>
                 </Table>
             </div>
+                    </>
+                ) : <CalledsPageFallback/>
+            }
         </div>
     )
 }

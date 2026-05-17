@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, BriefcaseBusiness, ClipboardList, LogOut, Menu, Plus, Trash, Upload, Users, Wrench } from "lucide-react";
+import { ArrowLeft, BriefcaseBusiness, ClipboardList, LogOut, Menu, Plus, Users, Wrench } from "lucide-react";
 import Image from "next/image"
 
 import { Separator } from "@/components/ui/separator"
@@ -21,12 +21,14 @@ import { NavLink } from "@/components/layouts/appLayoutHeader/navLink"
 import { api } from "@/libs/axios"
 import { useRouter } from "next/navigation"
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getUser } from "@/api/clientFetchs/getUser"
 import { useMediaQuery } from "usehooks-ts"
 import { User } from "@/api/types";
 
 export function AppLayoutHeader() {
+
+    const queryClient = useQueryClient()
 
     const isSm = useMediaQuery("(min-width: 640px)")
 
@@ -45,6 +47,8 @@ export function AppLayoutHeader() {
         mutationFn: () => api.delete('/sessions'),
         onSuccess: () => {
             router.replace('/sign-in')
+            queryClient.clear()
+            router.refresh()
         }
     })
 

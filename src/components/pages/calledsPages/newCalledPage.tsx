@@ -22,7 +22,7 @@ import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
-import { Called, Service } from '@/api/types'
+import { Service } from '@/api/types'
 
 const newCalledFormSchema = z.object({
     title: z.string().trim().min(3, { error: 'Digite um título válido.' }),
@@ -61,6 +61,7 @@ export function NewCalledPage() {
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['calleds']})
             router.replace('/calleds')
+            router.refresh()
             reset()
         },
         onError(error) {

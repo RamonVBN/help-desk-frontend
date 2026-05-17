@@ -11,6 +11,7 @@ export async function getCalledsServer() {
 
     const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL
     const res = await fetch(`${baseUrl}/api/calleds`, {
+        cache: 'no-store',
         headers: {
             Cookie: `${token?.name}=${token?.value}`
         }

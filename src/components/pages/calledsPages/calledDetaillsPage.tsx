@@ -1,13 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import {
-  ArrowLeft,
-  CircleCheckBig,
-  Clock2,
-  Plus,
-  Trash,
-} from "lucide-react"
+import { ArrowLeft, CircleCheckBig, Clock2, Plus, Trash } from "lucide-react"
 import Link from "next/link"
 
 import * as Card from "@/components/card"
@@ -41,7 +35,11 @@ export function CalledDetailsPage() {
     queryFn: getUser,
   })
 
-  const { data: called, isPending: isLoadingCalled, isFetching: isFetchingCalled } = useQuery<Called>({
+  const {
+    data: called,
+    isPending: isLoadingCalled,
+    isFetching: isFetchingCalled,
+  } = useQuery<Called>({
     queryKey: ["calleds", calledId],
     queryFn: async () => {
       const res = await api.get(`/calleds/${calledId}`)
@@ -52,53 +50,57 @@ export function CalledDetailsPage() {
     },
   })
 
-  const { mutate: updateCalledStatus, isPending: isUpdatingCalledStatus } = useMutation({
-    mutationFn: (status: "PROGRESS" | "CLOSED") =>
-      api.patch(`/calleds/${called?.id}`, {
-        status,
-      }),
+  const { mutate: updateCalledStatus, isPending: isUpdatingCalledStatus } =
+    useMutation({
+      mutationFn: (status: "PROGRESS" | "CLOSED") =>
+        api.patch(`/calleds/${called?.id}`, {
+          status,
+        }),
       onMutate() {
-        
-        const previousCalled = queryClient.getQueryData<Called>(['calleds', calledId])
+        const previousCalled = queryClient.getQueryData<Called>([
+          "calleds",
+          calledId,
+        ])
 
         return { previousCalled }
       },
       onError(error, _, context) {
         console.log(error)
-        queryClient.setQueryData<Called>(['calleds', calledId], context?.previousCalled)
+        queryClient.setQueryData<Called>(
+          ["calleds", calledId],
+          context?.previousCalled,
+        )
       },
 
-    onSuccess: (_, status) => {
-      queryClient.setQueryData<Called>(['calleds', calledId], (oldData) => {
-          if(!oldData) return oldData
+      onSuccess: (_, status) => {
+        queryClient.setQueryData<Called>(["calleds", calledId], (oldData) => {
+          if (!oldData) return oldData
 
           return {
             ...oldData,
-            status
+            status,
           }
         })
 
-      queryClient.setQueryData<Called[]>(['calleds'], (oldData) => {
-        if(!oldData) return oldData
+        queryClient.setQueryData<Called[]>(["calleds"], (oldData) => {
+          if (!oldData) return oldData
 
-        return oldData.map(called => {
-          if(called.id === calledId) {
-            return {
-              ...called,
-              status
+          return oldData.map((called) => {
+            if (called.id === calledId) {
+              return {
+                ...called,
+                status,
+              }
             }
-          }
 
-          return called
+            return called
+          })
         })
-      })
 
-      queryClient.invalidateQueries({ queryKey: ["calleds", calledId] })
-      queryClient.invalidateQueries({ queryKey: ["calleds"]})
-
-      
-    },
-  })
+        queryClient.invalidateQueries({ queryKey: ["calleds", calledId] })
+        queryClient.invalidateQueries({ queryKey: ["calleds"] })
+      },
+    })
 
   const { mutate: deleteAdditionalServices } = useMutation({
     mutationFn: (addServiceId: string) =>
@@ -136,7 +138,11 @@ export function CalledDetailsPage() {
           href={"/calleds"}
           className=" max-w-min flex gap-2 items-center font-bold text-xs leading-[140%] text-gray-300"
         >
-          <Button disabled={isUpdatingCalledStatus} variant={"ghost"} className="p-2 mr-auto hover:bg-gray-500">
+          <Button
+            disabled={isUpdatingCalledStatus}
+            variant={"ghost"}
+            className="p-2 mr-auto hover:bg-gray-500"
+          >
             <ArrowLeft size={14} />
             Voltar
           </Button>
@@ -190,7 +196,10 @@ export function CalledDetailsPage() {
                     </span>
                     <CalledStatus status={called.status} />
                   </div>
-                  <Card.Title title={called?.title} className="text-base whitespace-pre-wrap break-all" />
+                  <Card.Title
+                    title={called?.title}
+                    className="text-base whitespace-pre-wrap break-all"
+                  />
                 </div>
 
                 <div>
@@ -351,7 +360,10 @@ export function CalledDetailsPage() {
                       >
                         <DialogTrigger asChild>
                           {called.status !== "CLOSED" && (
-                            <Button size={"sm"} disabled={isUpdatingCalledStatus}>
+                            <Button
+                              size={"sm"}
+                              disabled={isUpdatingCalledStatus}
+                            >
                               <Plus
                                 strokeWidth={3}
                                 className="rounded-[5px]"

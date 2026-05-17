@@ -1,9 +1,9 @@
-import { TechnicianProfilePage } from "@/components/pages/techniciansPages/technicianProfilePage";
-import { Metadata } from "next";
+import { TechnicianProfilePage } from "@/components/pages/techniciansPages/technicianProfilePage"
+import { Metadata } from "next"
 
 const siteUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3333";
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3333"
 
 export const metadata: Metadata = {
   title: "Novo técnico",
@@ -18,11 +18,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${siteUrl}/technicians/new`,
   },
-};
+}
 
-export default function CreateTechnicianPage(){
-
-    return (
-        <TechnicianProfilePage mode="create"/>
-    )
+export default function CreateTechnicianPage() {
+  return <TechnicianProfilePage mode="create" />
 }

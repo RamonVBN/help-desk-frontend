@@ -1,15 +1,15 @@
 import { ClientCalleds } from "@/components/pages/calledsPages/clientCalleds"
 import { AdminCalleds } from "@/components/pages/calledsPages/adminCalleds"
 
-import { TechCalleds } from "@/components/pages/calledsPages/techCalleds";
-import { getUserServer } from "@/api/serverFetchs/getUser";
-import { getCalledsServer } from "@/api/serverFetchs/getCalleds";
-import { Metadata } from "next";
-import { Called } from "@/api/types";
+import { TechCalleds } from "@/components/pages/calledsPages/techCalleds"
+import { getUserServer } from "@/api/serverFetchs/getUser"
+import { getCalledsServer } from "@/api/serverFetchs/getCalleds"
+import { Metadata } from "next"
+import { Called, User } from "@/api/types"
 
 const siteUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3333";
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3333"
 
 export const metadata: Metadata = {
   title: "Chamados",
@@ -24,31 +24,22 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${siteUrl}/calleds`,
   },
-};
+}
 
 export default async function Calleds() {
+  const user: User = await getUserServer()
 
-    const user = await getUserServer()
+  const calleds: Called[] = await getCalledsServer()
 
-    const calleds: Called[] = await getCalledsServer()
-    
+  if (user.role === "ADMIN") {
+    return <AdminCalleds initialCalledsData={calleds} />
+  }
 
-    if (user.role === 'ADMIN') {
+  if (user.role === "TECHNICIAN") {
+    return <TechCalleds initialCalledsData={calleds} />
+  }
 
-        return (
-            <AdminCalleds initialCalledsData={calleds}/>
-        )
-    }
-
-    if (user.role === 'TECHNICIAN') {
-        return (
-            <TechCalleds initialCalledsData={calleds}/>
-        )
-    }
-
-    if (user.role === 'CLIENT') {
-        return (
-            <ClientCalleds initialCalledsData={calleds}/>
-        )
-    }
+  if (user.role === "CLIENT") {
+    return <ClientCalleds initialCalledsData={calleds} />
+  }
 }
