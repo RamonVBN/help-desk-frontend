@@ -23,6 +23,7 @@ import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
 import { Service } from '@/api/types'
+import { useState } from 'react'
 
 const newCalledFormSchema = z.object({
     title: z.string().trim().min(3, { error: 'Digite um título válido.' }),
@@ -38,7 +39,9 @@ export function NewCalledPage() {
 
     const router = useRouter()
 
-    const { register, control, handleSubmit, watch, reset, formState: { errors }, setError, setValue } = useForm<NewCalledPageForm>({
+    const [IsCreatingCalledLoading, setisCreatingCalledLoading] = useState(false)
+
+    const { register, control, handleSubmit, watch, formState: { errors }, setError, setValue } = useForm<NewCalledPageForm>({
         defaultValues: {
             serviceId: undefined
         },
@@ -52,19 +55,22 @@ export function NewCalledPage() {
 
     const selectedService = services?.find((service) => service.id === watch('serviceId'))
 
-    const { mutate: createCalleds, isPending: isCreatingCalled } = useMutation({
+    const { mutate: createCalleds } = useMutation({
         mutationFn: ({ title, description, serviceId }: NewCalledPageForm) => api.post('/calleds', {
             title,
             description,
             serviceId
         }),
+        onMutate: () => {
+            setisCreatingCalledLoading(true)
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['calleds']})
             router.replace('/calleds')
             router.refresh()
-            reset()
         },
         onError(error) {
+            setisCreatingCalledLoading(false)
             if (error instanceof AxiosError) {
                 const message = error.response?.data.message
 
@@ -101,7 +107,7 @@ export function NewCalledPage() {
                                 </div>
                                 <form id='createCalledForm' onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
                                     <div>
-                                        <Input maxLength={50} {...register('title')} onChange={(e) => allowJustLetters(e.currentTarget.value)} error={errors.root || errors.title ? true : false}  label='título' placeholder='Digite um título para o chamado' />
+                                        <Input  disabled={IsCreatingCalledLoading} maxLength={50} {...register('title')} onChange={(e) => allowJustLetters(e.currentTarget.value)} error={errors.root || errors.title ? true : false}  label='título' placeholder='Digite um título para o chamado' />
                                         {
                                             errors.title && (
                                                 <ErrorMessage>
@@ -124,7 +130,7 @@ export function NewCalledPage() {
                                                 DESCRIÇÃO
                                             </label>
 
-                                            <textarea maxLength={250} {...register('description')} placeholder='Descreva o que está acontecendo' className='outline-0 resize-none h-[9.625rem]' />
+                                            <textarea disabled={IsCreatingCalledLoading} maxLength={250} {...register('description')} placeholder='Descreva o que está acontecendo' className='outline-0 resize-none h-[9.625rem]' />
                                         </div>
                                         {
                                             errors.description && (
@@ -152,6 +158,7 @@ export function NewCalledPage() {
                                                         ${(errors.serviceId || errors.root) && 'text-red-300'}`}>CATEGORIA DE SERVIÇO</label>
 
                                                     <SelectTrigger 
+                                                    disabled={IsCreatingCalledLoading}
                                                     tabIndex={0}
                                                     error={errors.serviceId || errors.root ? true : false} id='selectService' 
                                                     className={`md:text-base leading-[140%] cursor-pointer border-b border-gray-500 rounded-none 
@@ -220,7 +227,7 @@ export function NewCalledPage() {
                                     </div>
                                 </div>
                                 <Card.Description description='O chamado será automaticamente atribuído a um técnico disponível' />
-                                <Button disabled={isCreatingCalled} form='createCalledForm' type='submit' className='rounded-[5px]'>
+                                <Button disabled={IsCreatingCalledLoading} form='createCalledForm' type='submit' className='rounded-[5px]'>
                                     Criar chamado
                                 </Button>
                             </div>
